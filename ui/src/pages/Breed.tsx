@@ -1,13 +1,15 @@
 import { useState, useEffect, useContext, useMemo } from "react";
 import { Layout } from "../Layout";
-import { BreedItem } from "../components/BreedItem";
-import { NftList } from "../components/NftList";
 import { AINft } from "../services/models";
 import { ClientsContext } from "../contexts/ClientsContext"
+import { SelectableImageGrid } from "../components/SelectableImageGrid";
+import { Button } from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 export const Breed = () => {
   const clients = useContext(ClientsContext);
   const [nfts, setNfts] = useState<AINft[]>([]);
+  const navigate = useNavigate();
 
   useEffect(()=> {
     clients.apiClient.getSeed(25).then((response) => {
@@ -38,28 +40,31 @@ export const Breed = () => {
     console.log(selectedParents);
   };
 
-  const onMintClick = () => {
-    console.log(selectedParents);
+  const startMinting = () => {
+    navigate("/breed/mint");
   }
+
 
   return (
     <Layout>
-      <section>
-        <BreedItem
-          selectedNfts={selectedNfts}
-          onBreedClick={onBreedClick}
-          onMintClick={onMintClick}
-          onNftItemClick={onNftItemClick}
-        />
-      </section>
+      <main className="flex flex-col w-full p-4 text-center">
+        <h4 className="text-center font-bold">Generated art</h4>
+        <p className="text-center text-slate-600">
+          Select 2 images for breeding the next generation of children.
+        </p>
+        <section className="md:px-20 px-4 py-4 mx-auto">
+          <SelectableImageGrid
+            imgUrls={selectedNfts.map(nft => nft.imageURL)}
+            onAllImageSelected={(urls) => console.log(urls)}
+            maxSelectable={2}
+          />
+        </section>
 
-      <section className="flex flex-col w-full p-4">
-        <h4 className="font-bold text-center md:text-left"></h4>
-        <hr />
-        <div className="py-4">
-          <NftList nfts={nfts} onNftItemClick={onNftItemClick}/>
-        </div>
-      </section>
+        <section className="md:px-12 px-4 py-4 text-center flex mx-auto gap-8">
+          <Button text="Breed new generation" onClick={onBreedClick}/>
+          <Button text="Select generation" onClick={startMinting} />
+        </section>
+      </main>
     </Layout>
   );
 };

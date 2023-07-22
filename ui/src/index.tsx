@@ -7,6 +7,8 @@ import { Breed } from "./pages/Breed";
 import { ApiClient } from "./services/clients";
 import { Mint } from "./pages/Mint";
 
+const apiClientContext = createContext(new ApiClient("http://localhost:8080"));
+
 const router = createBrowserRouter([
   { path: "/", element: <Collection /> },
   {
