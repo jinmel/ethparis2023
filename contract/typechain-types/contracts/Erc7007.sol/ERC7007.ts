@@ -46,6 +46,7 @@ export interface ERC7007Interface extends utils.Interface {
     "tokenIdMetadata(uint256)": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
     "transferFrom(address,address,uint256)": FunctionFragment;
+    "userRegistry()": FunctionFragment;
     "verifierContract()": FunctionFragment;
     "verify(bytes,bytes,bytes)": FunctionFragment;
   };
@@ -69,6 +70,7 @@ export interface ERC7007Interface extends utils.Interface {
       | "tokenIdMetadata"
       | "tokenURI"
       | "transferFrom"
+      | "userRegistry"
       | "verifierContract"
       | "verify"
   ): FunctionFragment;
@@ -154,6 +156,10 @@ export interface ERC7007Interface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "userRegistry",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "verifierContract",
     values?: undefined
   ): string;
@@ -208,6 +214,10 @@ export interface ERC7007Interface extends utils.Interface {
   decodeFunctionResult(functionFragment: "tokenURI", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferFrom",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "userRegistry",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -399,6 +409,8 @@ export interface ERC7007 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    userRegistry(overrides?: CallOverrides): Promise<[string]>;
+
     verifierContract(overrides?: CallOverrides): Promise<[string]>;
 
     verify(
@@ -502,6 +514,8 @@ export interface ERC7007 extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  userRegistry(overrides?: CallOverrides): Promise<string>;
+
   verifierContract(overrides?: CallOverrides): Promise<string>;
 
   verify(
@@ -604,6 +618,8 @@ export interface ERC7007 extends BaseContract {
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    userRegistry(overrides?: CallOverrides): Promise<string>;
 
     verifierContract(overrides?: CallOverrides): Promise<string>;
 
@@ -759,6 +775,8 @@ export interface ERC7007 extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    userRegistry(overrides?: CallOverrides): Promise<BigNumber>;
+
     verifierContract(overrides?: CallOverrides): Promise<BigNumber>;
 
     verify(
@@ -862,6 +880,8 @@ export interface ERC7007 extends BaseContract {
       tokenId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    userRegistry(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     verifierContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

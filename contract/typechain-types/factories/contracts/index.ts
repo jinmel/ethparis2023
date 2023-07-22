@@ -3,5 +3,6 @@
 /* eslint-disable */
 export * as erc7007Sol from "./Erc7007.sol";
 export { IErc7007__factory } from "./IErc7007__factory";
+export { IUserRegistry__factory } from "./IUserRegistry__factory";
 export { IVerifier__factory } from "./IVerifier__factory";
-export { Lock__factory } from "./Lock__factory";
+export { UserRegistry__factory } from "./UserRegistry__factory";

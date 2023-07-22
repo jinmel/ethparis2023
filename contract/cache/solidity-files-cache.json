@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/contracts/Erc7007.sol": {
-      "lastModificationDate": 1690020232810,
-      "contentHash": "fb2cfbae6d81f5a56ab3e2ae0d692eb4",
+      "lastModificationDate": 1690034402207,
+      "contentHash": "fc590b60dbe2ff4780f11c4064f51a9e",
       "sourceName": "contracts/Erc7007.sol",
       "solcConfig": {
         "version": "0.8.20",
@@ -32,7 +32,8 @@
         "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         "@openzeppelin/contracts/token/ERC721/IERC721.sol",
         "./IErc7007.sol",
-        "./IVerifier.sol"
+        "./IVerifier.sol",
+        "./IUserRegistry.sol"
       ],
       "versionPragmas": [
         "0.8.20"
@@ -112,6 +113,41 @@
       ],
       "artifacts": [
         "IVerifier"
+      ]
+    },
+    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/contracts/IUserRegistry.sol": {
+      "lastModificationDate": 1690033832489,
+      "contentHash": "f2ccd1a439794f0b5ace09d2d38f5174",
+      "sourceName": "contracts/IUserRegistry.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.20"
+      ],
+      "artifacts": [
+        "IUserRegistry"
       ]
     },
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
@@ -229,41 +265,6 @@
         "IERC165"
       ]
     },
-    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1689982557220,
-      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
-      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.1"
-      ],
-      "artifacts": [
-        "Address"
-      ]
-    },
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/Context.sol": {
       "lastModificationDate": 1689982557221,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
@@ -299,10 +300,10 @@
         "Context"
       ]
     },
-    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1689982557225,
-      "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
-      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
+    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/Address.sol": {
+      "lastModificationDate": 1689982557220,
+      "contentHash": "211ffd288c1588ba8c10eae668ca3c66",
+      "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -326,14 +327,12 @@
           }
         }
       },
-      "imports": [
-        "./IERC165.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
-        "^0.8.0"
+        "^0.8.1"
       ],
       "artifacts": [
-        "ERC165"
+        "Address"
       ]
     },
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
@@ -372,6 +371,43 @@
       ],
       "artifacts": [
         "Strings"
+      ]
+    },
+    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
+      "lastModificationDate": 1689982557225,
+      "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
+      "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./IERC165.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "ERC165"
       ]
     },
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
@@ -516,10 +552,10 @@
         "Math"
       ]
     },
-    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/contracts/Lock.sol": {
-      "lastModificationDate": 1689982401212,
-      "contentHash": "6b2b4e5f78898e06c05af92d32436ca9",
-      "sourceName": "contracts/Lock.sol",
+    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/contracts/UserRegistry.sol": {
+      "lastModificationDate": 1690034908737,
+      "contentHash": "8d7c056c95be021f7e0a1a9aa4279a70",
+      "sourceName": "contracts/UserRegistry.sol",
       "solcConfig": {
         "version": "0.8.20",
         "settings": {
@@ -544,48 +580,13 @@
         }
       },
       "imports": [
-        "hardhat/console.sol"
+        "./IUserRegistry.sol"
       ],
       "versionPragmas": [
-        "^0.8.9"
+        "0.8.20"
       ],
       "artifacts": [
-        "Lock"
-      ]
-    },
-    "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1689982412746,
-      "contentHash": "e2884fb4e1ef4b4a7c7ac3a227880b0f",
-      "sourceName": "hardhat/console.sol",
-      "solcConfig": {
-        "version": "0.8.20",
-        "settings": {
-          "optimizer": {
-            "enabled": false,
-            "runs": 200
-          },
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        ">= 0.4.22 <0.9.0"
-      ],
-      "artifacts": [
-        "console"
+        "UserRegistry"
       ]
     }
   }

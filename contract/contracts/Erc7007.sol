@@ -5,14 +5,25 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "./IErc7007.sol";
 import "./IVerifier.sol";
+import "./IUserRegistry.sol";
 
 contract ERC7007 is IErc7007, ERC721 {
     IVerifier public verifierContract;
+    IUserRegistry public userRegistry;
     mapping(uint256 tokenId => bytes16 metadata) public tokenIdMetadata;
     uint256 currentTokenId = 1;
 
-    constructor(IVerifier _verifierContract) ERC721("MyToken", "MTK") {
+    modifier requireRegistry() {
+        require(userRegistry.isUserExist(msg.sender), "User Not Registered");
+        _;
+    }
+
+    constructor(
+        IVerifier _verifierContract,
+        IUserRegistry _userRegistry
+    ) ERC721("MyToken", "MTK") {
         verifierContract = _verifierContract;
+        userRegistry = _userRegistry;
     }
 
     function safeMint(address to, uint256 tokenId) public {
@@ -24,7 +35,7 @@ contract ERC7007 is IErc7007, ERC721 {
         bytes calldata aigcData,
         string calldata uri,
         bytes calldata proof
-    ) external returns (uint256) {
+    ) external requireRegistry returns (uint256) {
         // verify correctlyness of prompt
         require(verify(prompt, aigcData, proof), "incorrrect proof");
         uint256 tokenIdNow = currentTokenId;
