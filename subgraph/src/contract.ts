@@ -8,7 +8,7 @@ import {
   Approval,
   ApprovalForAll,
   Mint,
-  TokenOwners,
+  TokenOwner,
   Transfer,
 } from "../generated/schema";
 import { Bytes } from "@graphprotocol/graph-ts";
@@ -78,7 +78,7 @@ export function handleTransfer(event: TransferEvent): void {
   const tokenIdBytes = Bytes.fromByteArray(
     Bytes.fromBigInt(event.params.tokenId)
   );
-  let token = new TokenOwners(tokenIdBytes);
+  let token = new TokenOwner(tokenIdBytes);
   token.tokenId = event.params.tokenId;
   token.owner = event.params.to;
   token.save();

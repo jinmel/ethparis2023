@@ -40,7 +40,7 @@ type Transfer @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
-type TokenOwners @entity(immutable: false) {
+type TokenOwner @entity(immutable: true) {
   id: Bytes!
   tokenId: BigInt!
   owner: Bytes!

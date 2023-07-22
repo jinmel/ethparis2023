@@ -519,7 +519,7 @@ export class Transfer extends Entity {
   }
 }
 
-export class TokenOwners extends Entity {
+export class TokenOwner extends Entity {
   constructor(id: Bytes) {
     super();
     this.set("id", Value.fromBytes(id));
@@ -527,25 +527,25 @@ export class TokenOwners extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id != null, "Cannot save TokenOwners entity without an ID");
+    assert(id != null, "Cannot save TokenOwner entity without an ID");
     if (id) {
       assert(
         id.kind == ValueKind.BYTES,
-        `Entities of type TokenOwners must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        `Entities of type TokenOwner must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("TokenOwners", id.toBytes().toHexString(), this);
+      store.set("TokenOwner", id.toBytes().toHexString(), this);
     }
   }
 
-  static loadInBlock(id: Bytes): TokenOwners | null {
-    return changetype<TokenOwners | null>(
-      store.get_in_block("TokenOwners", id.toHexString())
+  static loadInBlock(id: Bytes): TokenOwner | null {
+    return changetype<TokenOwner | null>(
+      store.get_in_block("TokenOwner", id.toHexString())
     );
   }
 
-  static load(id: Bytes): TokenOwners | null {
-    return changetype<TokenOwners | null>(
-      store.get("TokenOwners", id.toHexString())
+  static load(id: Bytes): TokenOwner | null {
+    return changetype<TokenOwner | null>(
+      store.get("TokenOwner", id.toHexString())
     );
   }
 
