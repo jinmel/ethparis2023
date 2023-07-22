@@ -59,6 +59,9 @@ describe("Unit test", function () {
         proof: this.proof,
       };
 
+      console.log(worldIDVerif);
+      // console.log(JSON.stringify(worldIDVerif));
+
       await expect(this.signUp.connect(this.user).verify(worldIDVerif)).not.to
         .be.reverted;
     });
