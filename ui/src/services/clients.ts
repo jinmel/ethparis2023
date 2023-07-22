@@ -1,8 +1,8 @@
-export default class Client {
+export class ApiClient {
   baseUri: string;
 
   contructor(baseUri: string) {
-    self.baseUri = baseUri;
+    this.baseUri = baseUri;
   }
 
   getSeed(size: number): Promise<Object> {
@@ -41,3 +41,19 @@ export default class Client {
     .then(res => res.json())
   }
 }
+
+export class GraphClient {
+  baseUri: string;
+  apiKey: string;
+
+  constructor(baseUri: string, apiKey: string) {
+    this.baseUri = baseUri;
+    this.apiKey = apiKey;
+  }
+
+  getCollection(collection: string): Promise<Object> {
+
+  }
+}
+
+
