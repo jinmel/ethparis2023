@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Layout } from "../Layout";
 import { BreedItem } from "../components/BreedItem";
-import { Container } from "../components/Container";
 import { NftList } from "../components/NftList";
 import { AINft } from "../services/models";
 
@@ -54,26 +53,22 @@ export const Breed = () => {
 
   return (
     <Layout>
-      <Container>
-        <section>
-          <BreedItem
-            item1={nfts[0]}
-            item2={nfts[1]}
-            onSelectedItemChange={onSelectedItemChange}
-            onBreedClicked={onBreed}
-          />
-        </section>
+      <section>
+        <BreedItem
+          item1={nfts[0]}
+          item2={nfts[1]}
+          onSelectedItemChange={onSelectedItemChange}
+          onBreedClicked={onBreed}
+        />
+      </section>
 
-        <section className="flex flex-col w-full p-4">
-          <h4 className="font-bold text-center md:text-left">
-            
-          </h4>
-          <hr />
-          <div className="py-4">
-            <NftList nfts={nfts} />
-          </div>
-        </section>
-      </Container>
+      <section className="flex flex-col w-full p-4">
+        <h4 className="font-bold text-center md:text-left"></h4>
+        <hr />
+        <div className="py-4">
+          <NftList nfts={nfts} />
+        </div>
+      </section>
     </Layout>
   );
 };

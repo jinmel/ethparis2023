@@ -36,7 +36,7 @@ export const GeneratedSelectableImageGrid = ({
   };
 
   return (
-    <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+    <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mx-auto">
       {imgUrls.map((url, idx) => (
         <div
           onClick={selectionInteraction(idx)}

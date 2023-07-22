@@ -1,5 +1,4 @@
 import { Layout } from "../Layout";
-import { Container } from "../components/Container";
 import { NftList } from "../components/NftList";
 import { AINft } from "../services/models";
 
@@ -34,11 +33,9 @@ const nfts: AINft[] = [
 export const Collection = () => {
   return (
     <Layout>
-      <Container>
-        <div className="p-8">
-          <NftList nfts={nfts} />
-        </div>
-      </Container>
+      <div className="p-8">
+        <NftList nfts={nfts} />
+      </div>
     </Layout>
   );
 };
