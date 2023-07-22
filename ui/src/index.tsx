@@ -4,8 +4,8 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Collection } from "./pages/Collection";
 import { Breed } from "./pages/Breed";
-import { Generate } from "./pages/Generate";
 import { ApiClient } from "./services/clients";
+import { Mint } from "./pages/Mint";
 
 const apiClientContext = createContext(new ApiClient("http://localhost:8080"));
 
@@ -13,9 +13,9 @@ const router = createBrowserRouter([
   { path: "/", element: <Collection /> },
   {
     path: "/breed",
-    element: <Generate />,
+    element: <Breed />,
   },
-  { path: "/breed/mint", element: <Breed /> },
+  { path: "/breed/mint", element: <Mint /> },
 ]);
 
 const root = ReactDOM.createRoot(

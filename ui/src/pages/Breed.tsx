@@ -1,74 +1,62 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Layout } from "../Layout";
-import { BreedItem } from "../components/BreedItem";
-import { NftList } from "../components/NftList";
-import { AINft } from "../services/models";
+import { Button } from "../components/Button";
+import { SelectableImageGrid } from "../components/SelectableImageGrid";
 
-const nfts: AINft[] = [
-  {
-    id: "122",
-    imageURL:
-      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
-  },
-  {
-    id: "123",
-    imageURL:
-      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
-  },
-  {
-    id: "123",
-    imageURL:
-      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
-  },
-  {
-    id: "123",
-    imageURL:
-      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
-  },
-  {
-    id: "123",
-    imageURL:
-      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
-  },
+const imgUrls = [
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
+  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
 ];
-
 export const Breed = () => {
-  const [selectedParents, setSelectedParent] = useState<{
-    item1: AINft | undefined;
-    item2: AINft | undefined;
-  }>();
-  const onSelectedItemChange = (
-    item1: AINft | undefined,
-    item2: AINft | undefined,
-  ) => {
-    setSelectedParent((prev) => ({
-      item1: item1 ?? prev?.item1,
-      item2: item2 ?? prev?.item2,
-    }));
-  };
+  const navigate = useNavigate();
 
-  const onBreed = () => {
-    console.log(selectedParents);
+  const startMinting = () => {
+    navigate("/breed/mint");
   };
-
+  
   return (
     <Layout>
-      <section>
-        <BreedItem
-          item1={nfts[0]}
-          item2={nfts[1]}
-          onSelectedItemChange={onSelectedItemChange}
-          onBreedClicked={onBreed}
-        />
-      </section>
+      <main className="flex flex-col w-full p-4 text-center">
+        <h4 className="text-center font-bold">Generated art</h4>
+        <p className="text-center text-slate-600">
+          Select 2 images for breeding the next generation of children.
+        </p>
+        <section className="md:px-20 px-4 py-4 mx-auto">
+          <SelectableImageGrid
+            imgUrls={imgUrls}
+            onAllImageSelected={(urls) => console.log(urls)}
+            maxSelectable={2}
+          />
+        </section>
 
-      <section className="flex flex-col w-full p-4">
-        <h4 className="font-bold text-center md:text-left"></h4>
-        <hr />
-        <div className="py-4">
-          <NftList nfts={nfts} />
-        </div>
-      </section>
+        <section className="md:px-12 px-4 py-4 text-center flex mx-auto gap-8">
+          <Button text="Breed new generation" />
+          <Button text="Select generation" onClick={startMinting} />
+        </section>
+      </main>
     </Layout>
   );
 };
