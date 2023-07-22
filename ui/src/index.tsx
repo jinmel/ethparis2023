@@ -2,9 +2,9 @@ import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Collection } from "./page/Collection";
-import { Breed } from "./page/Breed";
-import { Generate } from "./page/Generate";
+import { Collection } from "./pages/Collection";
+import { Breed } from "./pages/Breed";
+import { Generate } from "./pages/Generate";
 import { ApiClient } from "./services/clients";
 
 const apiClientContext = createContext(new ApiClient("http://localhost:8080"));
