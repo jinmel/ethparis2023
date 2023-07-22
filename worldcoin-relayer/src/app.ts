@@ -2,8 +2,7 @@ import express, { Application, Response, Request } from "express";
 import { ethers, Wallet } from "ethers";
 import * as dotenv from "dotenv";
 import cors from "cors";
-import userRegistryJson from "../../contract/artifacts/contracts/UserRegistry.sol/UserRegistry.json";
-import { UserRegistry } from "../../contract/typechain-types/contracts/UserRegistry";
+import UserRegistryAbi from "./abi/UserRegistryAbi.json";
 
 const app: Application = express();
 app.use(cors());
@@ -23,19 +22,24 @@ const targetProvider = new ethers.providers.JsonRpcProvider(targetRpcUrl);
 const worldCoinSigner = new ethers.Wallet(privateKey, worldCoinProvider);
 const targetSigner = new ethers.Wallet(privateKey, targetProvider);
 
-const userRegistryInterface = new ethers.utils.Interface(userRegistryJson.abi);
 const userRegistryContract = new ethers.Contract(
   userRegistryAddr,
-  userRegistryJson.abi,
+  UserRegistryAbi,
   targetSigner
 );
 // const xx = new User
 
+app.get("/test", async (req: Request, res: Response) => {
+  res.json({
+    number: 1,
+  });
+});
+
 app.post("/register", async (req: Request, res: Response) => {
   const data = req.body;
-  const userAddr = data.userAddress as string;
-
-  // check if user is registered
+  const userAddr = data.userAddr as string;
+  console.log(`user address: ${userAddr}`);
+  // check if user is regitered
   const isRegistered: boolean = await userRegistryContract.isUserExist(
     userAddr
   );
@@ -43,13 +47,16 @@ app.post("/register", async (req: Request, res: Response) => {
     res.sendStatus(404);
   }
 
-  // register on worldcoin to get world id
-  const worldId = 5;
-
-  // send to user registry
-  await userRegistryContract.registerUser(worldId, userAddr);
-
+  console.log(`isRegistered: ${isRegistered}`);
+  //   // register on worldcoin to get world id
+  //   const worldId = 5;
+  //   // send to user registry
+  //   await userRegistryContract.registerUser(worldId, userAddr);
   res.json({
     status: 1,
   });
+});
+
+app.listen(PORT, (): void => {
+  console.log("SERVER IS UP ON PORT:", PORT);
 });
