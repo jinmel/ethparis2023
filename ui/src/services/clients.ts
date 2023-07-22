@@ -52,7 +52,9 @@ export class GraphClient {
   }
 
   getCollection(collection: string): Promise<Object> {
-
+    return new Promise({
+      nfts: []
+    });
   }
 }
 

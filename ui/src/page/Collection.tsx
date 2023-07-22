@@ -1,6 +1,9 @@
 import { Layout } from "../Layout";
 import { NftList } from "../components/NftList";
 import { AINft } from "../services/models";
+import React, { useState, useEffect, useContext } from "react";
+import { ClientsContext } from "../contexts/ClientsContext";
+
 
 const nfts: AINft[] = [
   {
@@ -31,6 +34,17 @@ const nfts: AINft[] = [
 ];
 
 export const Collection = () => {
+  const clients = useContext(ClientsContext);
+  const [nfts, setNfts] = useState<AINft[]>([]);
+
+  useEffect(() => {
+    if (!nfts) {
+      clients.graphClient.getCollection("slug").then((data) => {
+        setNfts(data.nfts);
+      });
+    }
+  }, []);
+
   return (
     <Layout>
       <div className="p-8">
