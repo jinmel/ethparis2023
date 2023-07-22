@@ -4,10 +4,15 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Collection } from "./page/Collection";
 import { Breed } from "./page/Breed";
+import { Generate } from "./page/Generate";
 
 const router = createBrowserRouter([
   { path: "/", element: <Collection /> },
-  { path: "/breed", element: <Breed /> },
+  {
+    path: "/breed",
+    element: <Generate />,
+  },
+  { path: "/breed/mint", element: <Breed /> },
 ]);
 
 const root = ReactDOM.createRoot(
@@ -16,6 +21,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );

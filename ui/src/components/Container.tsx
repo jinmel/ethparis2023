@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 
 export const Container = ({ children }: PropsWithChildren) => (
-  <div className="flex flex-col p-4 w-auto h-full bg-black m-0 align-middle justify-center">
+  <div className="flex flex-col p-4 w-auto h-full m-0 bg-orange-50">
     {children}
   </div>
 );

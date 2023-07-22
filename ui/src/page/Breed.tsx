@@ -1,26 +1,78 @@
+import { useState } from "react";
 import { Layout } from "../Layout";
+import { BreedItem } from "../components/BreedItem";
 import { Container } from "../components/Container";
-import { NftItem } from "../components/NftItem";
+import { NftList } from "../components/NftList";
 import { AINft } from "../services/models";
 
 const nfts: AINft[] = [
-  { id: "122", imageURL: "#" },
-  { id: "123", imageURL: "#" },
+  {
+    id: "122",
+    imageURL:
+      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
+  },
+  {
+    id: "123",
+    imageURL:
+      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
+  },
+  {
+    id: "123",
+    imageURL:
+      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
+  },
+  {
+    id: "123",
+    imageURL:
+      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
+  },
+  {
+    id: "123",
+    imageURL:
+      "https://images.unsplash.com/photo-1545231097-cbd796f1d95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2190&q=80",
+  },
 ];
 
 export const Breed = () => {
+  const [selectedParents, setSelectedParent] = useState<{
+    item1: AINft | undefined;
+    item2: AINft | undefined;
+  }>();
+  const onSelectedItemChange = (
+    item1: AINft | undefined,
+    item2: AINft | undefined,
+  ) => {
+    setSelectedParent((prev) => ({
+      item1: item1 ?? prev?.item1,
+      item2: item2 ?? prev?.item2,
+    }));
+  };
+
+  const onBreed = () => {
+    console.log(selectedParents);
+  };
+
   return (
     <Layout>
       <Container>
-        <div className="relative overflow-hidden">
-          <section className="">
-            <div className="max-w-[1400px] relative h-[280px] mx-auto my-0 bg-[#272D37]/60 rounded-2xl border-3 border-solid border-[#0039FF] sm:h-[150px] md:mx-2 "></div>
-          </section>
-          <section className="max-w-[1200px] my-20 mx-auto grid grid-cols-3 md:grid-cols-2 gap-4 font-body  overflow-hidden top-7 md:gap-5 medium md:px-5 sm:grid-cols-1 sm:h-full relative justify-center items-center">
-            {nfts?.map((nft, i) => <NftItem key={nft.id} nft={nft} />)}
-          </section>
-          {/* <Footer /> */}
-        </div>
+        <section>
+          <BreedItem
+            item1={nfts[0]}
+            item2={nfts[1]}
+            onSelectedItemChange={onSelectedItemChange}
+            onBreedClicked={onBreed}
+          />
+        </section>
+
+        <section className="flex flex-col w-full p-4">
+          <h4 className="font-bold text-center md:text-left">
+            
+          </h4>
+          <hr />
+          <div className="py-4">
+            <NftList nfts={nfts} />
+          </div>
+        </section>
       </Container>
     </Layout>
   );

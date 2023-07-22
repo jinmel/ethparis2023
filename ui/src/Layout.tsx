@@ -4,9 +4,10 @@ import { useLocation } from "react-router-dom";
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const { pathname } = useLocation();
+  const pathCategory = `/${pathname.split("/")[1] ?? ""}`;
   return (
     <div className="h-full flex flex-col">
-      <Navbar currentHref={pathname} />
+      <Navbar currentHref={pathCategory} />
       <div className="flex-grow">{children}</div>
     </div>
   );

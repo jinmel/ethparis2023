@@ -4,7 +4,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 
 const navigation = [
-  { name: "Collection", href: "/" },
+  { name: "My Collection", href: "/" },
   { name: "Breed", href: "/breed" },
 ];
 
@@ -42,7 +42,9 @@ export const Navbar = ({ currentHref }: { currentHref: string }) => (
                           : "text-gray-300 hover:bg-gray-700 hover:text-white",
                         "rounded-md px-3 py-2 text-sm font-medium",
                       )}
-                      aria-current={currentHref === item.href ? "page" : undefined}
+                      aria-current={
+                        currentHref === item.href ? "page" : undefined
+                      }
                     >
                       {item.name}
                     </Link>
@@ -127,12 +129,12 @@ export const Navbar = ({ currentHref }: { currentHref: string }) => (
                 as="a"
                 href={item.href}
                 className={classNames(
-                  item.current
+                  currentHref === item.href
                     ? "bg-gray-900 text-white"
                     : "text-gray-300 hover:bg-gray-700 hover:text-white",
                   "block rounded-md px-3 py-2 text-base font-medium",
                 )}
-                aria-current={item.current ? "page" : undefined}
+                aria-current={currentHref == item.href ? "page" : undefined}
               >
                 {item.name}
               </Disclosure.Button>
