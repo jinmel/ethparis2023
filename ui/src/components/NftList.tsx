@@ -1,10 +1,16 @@
 import { NftItem } from "../components/NftItem";
 import { AINft } from "../services/models";
 
-export const NftList = ({ nfts }: { nfts: AINft[] }) => {
+interface NftListProps {
+  nfts: AINft[];
+  onNftItemClick: (index: number) => void;
+}
+
+export const NftList = ({ nfts, onNftItemClick }: NftListProps) => {
   return (
     <section className="grid grid-cols-2 md:grid-cols-4 gap-2 md:content-start md:justify-start justify-center content-center h-full w-full">
-      {nfts?.map((nft) => <NftItem key={nft.id} nft={nft} />)}
+      {nfts?.map((nft, index) => <NftItem key={index} nft={nft}
+          onClick={() => onNftItemClick(index)}/>)}
     </section>
   );
 };

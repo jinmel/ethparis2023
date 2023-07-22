@@ -1,11 +1,15 @@
 import { AINft } from "../services/models";
 
-export const NftItem = ({ nft }: { nft: AINft }) => {
+interface NftItemProps {
+  nft: AINft;
+  onClick: () => void;
+}
+
+export const NftItem = ({ nft, onClick }: NftItemProps) => {
   return (
     <div
-      key={nft.id}
       className="relative w-auto max-h-[300px] align-middle justify-center overflow-hidden rounded-lg shadow-lg cursor-pointer"
-    >
+      onClick={onClick}>
       <img
         src={nft?.imageURL}
         className="object-contain rounded-md w-full h-auto"

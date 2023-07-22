@@ -1,6 +1,7 @@
 export type AINft = {
-  id: string;
+  id?: string;
   imageURL: string;
+  genome: Array<number>;
 };
 
 export type ERC7007Info = {

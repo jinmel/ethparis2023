@@ -1,62 +1,65 @@
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext, useMemo } from "react";
 import { Layout } from "../Layout";
-import { Button } from "../components/Button";
-import { SelectableImageGrid } from "../components/SelectableImageGrid";
+import { BreedItem } from "../components/BreedItem";
+import { NftList } from "../components/NftList";
+import { AINft } from "../services/models";
+import { ClientsContext } from "../contexts/ClientsContext"
 
-const imgUrls = [
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-];
 export const Breed = () => {
-  const navigate = useNavigate();
+  const clients = useContext(ClientsContext);
+  const [nfts, setNfts] = useState<AINft[]>([]);
 
-  const startMinting = () => {
-    navigate("/breed/mint");
+  useEffect(()=> {
+    clients.apiClient.getSeed(25).then((response) => {
+      const nfts = response.map(elem => {
+        return {imageURL: elem.image, genome: elem.genome};
+      });
+      setNfts(nfts);
+    });
+  });
+
+  const [selectedParents, setSelectedParent] = useState<Array<number>>([]);
+
+  const selectedNfts = useMemo(() => {
+    return selectedParents.map((index) => nfts[index]);
+  }, [selectedParents, nfts]);
+
+  const onNftItemClick = (index: number) => {
+    setSelectedParent((prev) => {
+      if (prev.includes(index)) {
+        return prev.filter((item) => item !== index);
+      } else {
+        return [...prev, index];
+      }
+    });
+  }
+
+  const onBreedClick = () => {
+    console.log(selectedParents);
   };
-  
+
+  const onMintClick = () => {
+    console.log(selectedParents);
+  }
+
   return (
     <Layout>
-      <main className="flex flex-col w-full p-4 text-center">
-        <h4 className="text-center font-bold">Generated art</h4>
-        <p className="text-center text-slate-600">
-          Select 2 images for breeding the next generation of children.
-        </p>
-        <section className="md:px-20 px-4 py-4 mx-auto">
-          <SelectableImageGrid
-            imgUrls={imgUrls}
-            onAllImageSelected={(urls) => console.log(urls)}
-            maxSelectable={2}
-          />
-        </section>
+      <section>
+        <BreedItem
+          selectedNfts={selectedNfts}
+          onBreedClick={onBreedClick}
+          onMintClick={onMintClick}
+          onNftItemClick={onNftItemClick}
+        />
+      </section>
 
-        <section className="md:px-12 px-4 py-4 text-center flex mx-auto gap-8">
-          <Button text="Breed new generation" />
-          <Button text="Select generation" onClick={startMinting} />
-        </section>
-      </main>
+      <section className="flex flex-col w-full p-4">
+        <h4 className="font-bold text-center md:text-left"></h4>
+        <hr />
+        <div className="py-4">
+          <NftList nfts={nfts} onNftItemClick={onNftItemClick}/>
+        </div>
+      </section>
     </Layout>
   );
 };

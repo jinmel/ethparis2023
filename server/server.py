@@ -2,6 +2,7 @@
 
 import logging
 import os
+import random
 from typing import List
 import uuid
 
@@ -130,8 +131,11 @@ async def evolve(r: EvolveRequest):
     for genome in r.genomes:
         if len(genome) != 32:
             raise HTTPException(status_code=400, detail='Invalid genome length')
+    parents = r.genomes
     children = genetic.evolution(r.genomes, 0.4, r.num_children)
-    result = image_util.generate(model, children)
+    next_batch = parents + children
+    random.shuffle(next_batch)
+    result = image_util.generate(model, next_batch)
     image_uris = convert_tensor_to_images(result)
     response = []
     for uri, genome in zip(image_uris, r.genomes):
