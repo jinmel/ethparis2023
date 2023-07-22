@@ -46,6 +46,11 @@ const config: HardhatUserConfig = {
       chainId: 5,
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
+    chiado: {
+      url: "https://rpc.chiadochain.net",
+      accounts: [`0x${process.env.PRIVATE_KEY}`],
+      chainId: 10200
+    }
   },
   etherscan: {
     apiKey: {

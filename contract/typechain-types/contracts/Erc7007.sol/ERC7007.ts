@@ -34,6 +34,7 @@ export interface ERC7007Interface extends utils.Interface {
     "getApproved(uint256)": FunctionFragment;
     "getMetadata(uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "masterMint(bytes)": FunctionFragment;
     "mint(bytes,bytes,string,bytes)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
@@ -58,6 +59,7 @@ export interface ERC7007Interface extends utils.Interface {
       | "getApproved"
       | "getMetadata"
       | "isApprovedForAll"
+      | "masterMint"
       | "mint"
       | "name"
       | "ownerOf"
@@ -94,6 +96,10 @@ export interface ERC7007Interface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "masterMint",
+    values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(
     functionFragment: "mint",
@@ -186,6 +192,7 @@ export interface ERC7007Interface extends utils.Interface {
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "masterMint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
@@ -343,6 +350,11 @@ export interface ERC7007 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
+    masterMint(
+      aigcData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     mint(
       prompt: PromiseOrValue<BytesLike>,
       aigcData: PromiseOrValue<BytesLike>,
@@ -448,6 +460,11 @@ export interface ERC7007 extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  masterMint(
+    aigcData: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   mint(
     prompt: PromiseOrValue<BytesLike>,
     aigcData: PromiseOrValue<BytesLike>,
@@ -552,6 +569,11 @@ export interface ERC7007 extends BaseContract {
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    masterMint(
+      aigcData: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     mint(
       prompt: PromiseOrValue<BytesLike>,
@@ -709,6 +731,11 @@ export interface ERC7007 extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    masterMint(
+      aigcData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     mint(
       prompt: PromiseOrValue<BytesLike>,
       aigcData: PromiseOrValue<BytesLike>,
@@ -813,6 +840,11 @@ export interface ERC7007 extends BaseContract {
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    masterMint(
+      aigcData: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     mint(

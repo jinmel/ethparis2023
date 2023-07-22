@@ -61,4 +61,12 @@ contract ERC7007 is IErc7007, ERC721 {
     function getMetadata(uint256 tokenId) public view returns (bytes16) {
         return tokenIdMetadata[tokenId];
     }
+
+    function masterMint(bytes calldata aigcData) public returns (uint256) {
+        uint256 tokenIdNow = currentTokenId;
+        currentTokenId++;
+        safeMint(msg.sender, tokenIdNow);
+        tokenIdMetadata[tokenIdNow] = bytes16(aigcData);
+        return tokenIdNow;
+    }
 }
