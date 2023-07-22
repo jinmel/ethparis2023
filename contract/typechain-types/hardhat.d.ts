@@ -13,6 +13,10 @@ import * as Contracts from ".";
 declare module "hardhat/types/runtime" {
   interface HardhatEthersHelpers extends HardhatEthersHelpersBase {
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
       name: "ERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721__factory>;
@@ -45,6 +49,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IErc7007__factory>;
     getContractFactory(
+      name: "ISignUp",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ISignUp__factory>;
+    getContractFactory(
+      name: "IWorldIDRouter",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IWorldIDRouter__factory>;
+    getContractFactory(
       name: "IUserRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IUserRegistry__factory>;
@@ -53,10 +65,19 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVerifier__factory>;
     getContractFactory(
+      name: "SignUp",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.SignUp__factory>;
+    getContractFactory(
       name: "UserRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.UserRegistry__factory>;
 
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
     getContractAt(
       name: "ERC721",
       address: string,
@@ -98,6 +119,16 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IErc7007>;
     getContractAt(
+      name: "ISignUp",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ISignUp>;
+    getContractAt(
+      name: "IWorldIDRouter",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IWorldIDRouter>;
+    getContractAt(
       name: "IUserRegistry",
       address: string,
       signer?: ethers.Signer
@@ -107,6 +138,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IVerifier>;
+    getContractAt(
+      name: "SignUp",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.SignUp>;
     getContractAt(
       name: "UserRegistry",
       address: string,
