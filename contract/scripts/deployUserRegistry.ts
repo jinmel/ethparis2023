@@ -7,6 +7,8 @@ async function main() {
     "0x7730Edfb83212BABe9396064d765a3d5afEc671a"
   );
   console.log(`Contract Address: ${userRegistry.address}`);
+
+//   const tx = await userRegistry.registerUser(1, ethers.constants.AddressZero)
 }
 
 main().catch((error) => {
