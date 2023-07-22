@@ -99,8 +99,6 @@ def export(
         )
 
 
-
-
 def main(_):
     config = Config()
     model = CPPN(config)
