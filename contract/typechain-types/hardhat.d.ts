@@ -45,13 +45,17 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IErc7007__factory>;
     getContractFactory(
+      name: "IUserRegistry",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IUserRegistry__factory>;
+    getContractFactory(
       name: "IVerifier",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IVerifier__factory>;
     getContractFactory(
-      name: "Lock",
+      name: "UserRegistry",
       signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.Lock__factory>;
+    ): Promise<Contracts.UserRegistry__factory>;
 
     getContractAt(
       name: "ERC721",
@@ -94,15 +98,20 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IErc7007>;
     getContractAt(
+      name: "IUserRegistry",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IUserRegistry>;
+    getContractAt(
       name: "IVerifier",
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IVerifier>;
     getContractAt(
-      name: "Lock",
+      name: "UserRegistry",
       address: string,
       signer?: ethers.Signer
-    ): Promise<Contracts.Lock>;
+    ): Promise<Contracts.UserRegistry>;
 
     // default types
     getContractFactory(

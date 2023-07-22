@@ -4,5 +4,6 @@
 import type * as erc7007Sol from "./Erc7007.sol";
 export type { erc7007Sol };
 export type { IErc7007 } from "./IErc7007";
+export type { IUserRegistry } from "./IUserRegistry";
 export type { IVerifier } from "./IVerifier";
-export type { Lock } from "./Lock";
+export type { UserRegistry } from "./UserRegistry";
