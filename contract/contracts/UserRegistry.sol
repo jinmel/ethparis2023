@@ -28,8 +28,8 @@ contract UserRegistry is IUserRegistry {
 
     function registerUser(
         uint256 worldCoinId,
-        address userAddr
-    ) public onlyRelayer {
+        address userAddr //onlyRelayer
+    ) public {
         userWorldCoinMapping[worldCoinId] = userAddr;
         userWorldCoinReverseMapping[userAddr] = worldCoinId;
         emit UserRegister(worldCoinId, userAddr);

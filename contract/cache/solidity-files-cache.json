@@ -553,8 +553,8 @@
       ]
     },
     "/Users/cheechyuanang/Documents/repo/ethparis2023/contract/contracts/UserRegistry.sol": {
-      "lastModificationDate": 1690034908737,
-      "contentHash": "8d7c056c95be021f7e0a1a9aa4279a70",
+      "lastModificationDate": 1690052350426,
+      "contentHash": "03a37d2554da53b9901f289ad199b9b5",
       "sourceName": "contracts/UserRegistry.sol",
       "solcConfig": {
         "version": "0.8.20",
