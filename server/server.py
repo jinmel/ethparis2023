@@ -71,6 +71,12 @@ class ProveRequest(BaseModel):
             raise ValueError('Invalid genome length')
 
 
+class Image(BaseModel):
+    """Image model."""
+    image: str
+    genome: List[float]
+
+
 def convert_tensor_to_images(tensors):
     tensors = torch.unbind(tensors)
     image_uris = []
@@ -90,11 +96,15 @@ async def get_root():
 
 
 @app.post('/generate')
-async def generate(r: GenerateRequest):
+async def generate(r: GenerateRequest) -> List[Image]:
     """Get image from given genomes."""
     result = image_util.generate(model, r.genomes)
     image_uris = convert_tensor_to_images(result)
-    return {'images': image_uris}
+    response = []
+
+    for uri, genome in zip(image_uris, r.genomes):
+        response.append(Image(image=uri, genome=genome))
+    return response
 
 
 @app.get('/generate/seed')
@@ -106,7 +116,12 @@ async def seed(size: int):
     logger.info('Generated %d images', len(image_uris))
     for uri in image_uris:
         logger.info('Generated image uri: %s', uri)
-    return {'images': image_uris, 'genes': seed_genomes.tolist()}
+
+    response = []
+    for uri, genome in zip(image_uris, seed_genomes.tolist()):
+        response.append(Image(image=uri, genome=genome))
+
+    return response
 
 
 @app.post('/generate/evolve')
@@ -118,7 +133,10 @@ async def evolve(r: EvolveRequest):
     children = genetic.evolution(r.genomes, 0.4, r.num_children)
     result = image_util.generate(model, children)
     image_uris = convert_tensor_to_images(result)
-    return {'images': image_uris, 'genes': children}
+    response = []
+    for uri, genome in zip(image_uris, r.genomes):
+        response.append(Image(image=uri, genome=genome))
+    return response
 
 
 @app.post('/prove')
