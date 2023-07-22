@@ -1,5 +1,6 @@
 """Model trainer."""
 import json
+import os
 
 from absl import app
 from absl import flags
@@ -13,7 +14,7 @@ from config import Config
 
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string('checkpoint', None, 'Checkpoint path.')
+flags.DEFINE_string('output_dir', None, 'Output directory.')
 
 def export(
     torch_model,
@@ -102,10 +103,15 @@ def export(
 def main(_):
     config = Config()
     model = CPPN(config)
-    torch.save(model.state_dict(), FLAGS.checkpoint)
-    logging.info('Saved checkpoint to %s', FLAGS.checkpoint)
+    torch.save(model.state_dict(), os.path.join(FLAGS.output_dir, 'model.pt'))
     with torch.no_grad():
-        export(model, onnx_filename='model.onnx', input_shape=[1, config.dim_z], run_gen_witness=False, run_calibrate_settings=False)
+        export(model,
+               onnx_filename=os.path.join(FLAGS.output_dir, 'model.onnx'),
+               input_filename=os.path.join(FLAGS.output_dir, 'input.json'),
+               settings_filename=os.path.join(FLAGS.output_dir, 'settings.json'),
+               input_shape=[1, config.dim_z],
+               run_gen_witness=False,
+               run_calibrate_settings=False)
 
 
 if __name__ == '__main__':
