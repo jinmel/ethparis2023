@@ -163,3 +163,5 @@ cython_debug/
 
 .python-version
 pyproject.toml
+.DS_Store
+Session.vim
