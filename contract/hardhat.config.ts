@@ -50,6 +50,11 @@ const config: HardhatUserConfig = {
       url: "https://rpc.chiadochain.net",
       accounts: [`0x${process.env.PRIVATE_KEY}`],
       chainId: 10200
+    },
+    mantle: {
+      url: "https://rpc.testnet.mantle.xyz",
+      accounts: [`0x${process.env.PRIVATE_KEY}`],
+      chainId: 5001
     }
   },
   etherscan: {
