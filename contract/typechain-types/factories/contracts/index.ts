@@ -2,7 +2,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as erc7007Sol from "./Erc7007.sol";
+export * as interfaces from "./interfaces";
 export { IErc7007__factory } from "./IErc7007__factory";
 export { IUserRegistry__factory } from "./IUserRegistry__factory";
 export { IVerifier__factory } from "./IVerifier__factory";
+export { SignUp__factory } from "./SignUp__factory";
 export { UserRegistry__factory } from "./UserRegistry__factory";

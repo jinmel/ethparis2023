@@ -3,7 +3,10 @@
 /* eslint-disable */
 import type * as erc7007Sol from "./Erc7007.sol";
 export type { erc7007Sol };
+import type * as interfaces from "./interfaces";
+export type { interfaces };
 export type { IErc7007 } from "./IErc7007";
 export type { IUserRegistry } from "./IUserRegistry";
 export type { IVerifier } from "./IVerifier";
+export type { SignUp } from "./SignUp";
 export type { UserRegistry } from "./UserRegistry";
