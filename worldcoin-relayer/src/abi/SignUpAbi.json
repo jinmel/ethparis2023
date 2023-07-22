@@ -1,0 +1,82 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_worldIDRouter",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "root",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "group",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "signal",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256",
+                        "name": "nullifierHash",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "appID",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "actionID",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "uint256[8]",
+                        "name": "proof",
+                        "type": "uint256[8]"
+                    }
+                ],
+                "internalType": "struct WorldIDVerification",
+                "name": "verif",
+                "type": "tuple"
+            }
+        ],
+        "name": "verify",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "worldIDRouter",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
