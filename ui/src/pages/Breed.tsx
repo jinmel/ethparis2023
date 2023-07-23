@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useMemo, useCallback } from "react";
 import { Layout } from "../Layout";
-import { AIGeneratedChildren } from "../services/models";
+import { AINft } from "../services/models";
 import { ClientsContext } from "../contexts/ClientsContext";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { Button } from "../components/Button";
@@ -9,10 +9,11 @@ import useSWR from "swr";
 
 export const Breed = () => {
   const clients = useContext(ClientsContext);
-  const [nfts, setNfts] = useState<AIGeneratedChildren[]>([]);
-  const { data } = useSWR("/generate/seed", () =>
-    clients.apiClient.getSeed(25),
-  );
+  const [nfts, setNfts] = useState<AINft[]>([]);
+  const { data } = useSWR("/generate/seed", () => {
+    console.log('getting seed');
+    return clients.apiClient.getSeed(25)
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,41 +24,53 @@ export const Breed = () => {
     setNfts(nfts);
   }, [data]);
 
-  const [selectedParents, setSelectedParents] = useState<Array<number>>([]);
-
-  const selectedChildren = useMemo(() => {
+  const [selectedParents, setSelectedParents] = useState<number[]>([]);
+  const selectedNfts = useMemo(() => {
     return selectedParents.map((index) => nfts[index]);
   }, [selectedParents, nfts]);
 
-  const onBreedClick = useCallback(async () => {
-    console.log(selectedChildren);
-    const response = await clients.apiClient.evolve(
-      selectedChildren.map((nft) => nft.genome),
-      25,
-    );
+  const onBreedClick = useCallback(() => {
+    console.log('Breed click')
+    console.log('selectedNfts', selectedNfts);
+    clients.apiClient
+      .evolve(
+        selectedNfts.map((nft) => nft.genome),
+        25,
+      )
+      .then((res) => {
+        const nextGen = res.map((elem) => {
+          return { imageURL: elem.image, genome: elem.genome };
+        });
+        setNfts(nextGen);
+        setSelectedParents([]);
+      });
+  }, [selectedNfts]);
 
-    const nextGen = await response.map((elem) => {
-      setNfts(nextGen);
-      return { imageURL: elem.image, genome: elem.genome };
-    });
-  }, [selectedChildren]);
+  const onImageClick = (index: number) => {
+    if (selectedParents.includes(index)) {
+      setSelectedParents(selectedParents.filter((elem) => elem !== index));
+    }
+    else {
+      setSelectedParents([...selectedParents, index]);
+    }
+  }
 
-  const startMinting = () => {
-    navigate("/breed/mint", { state: { nfts } });
-  };
+  const startMinting = useCallback(() => {
+    navigate("/breed/mint", { state: { nfts: nfts } });
+  }, [nfts]);
 
   return (
     <Layout>
       <main className="flex flex-col w-full p-4 text-center">
         <h4 className="text-center font-bold">Generated art</h4>
         <p className="text-center text-slate-600">
-          Select 3 images for breeding the next generation of children.
+          Select images for breeding the next generation of images.
         </p>
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectableImageGrid
             imgUrls={nfts.map((nft) => nft.imageURL)}
-            onAllImageSelected={(selected) => setSelectedParents(selected)}
-            maxSelectable={3}
+            selected={selectedParents}
+            onImageClick={onImageClick}
           />
         </section>
 
