@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout } from "../Layout";
 import { Button } from "../components/Button";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { SelectedImageViewer } from "../components/SelectedImageViewer";
 import { ERC7007Info } from "../services/models";
 import { useLocation } from "react-router-dom";
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
-import erc7007Abi from "../../abi/erc7007Abi.json";
-import { ToastContainer, toast } from "react-toastify";
+import { useContractWrite } from "wagmi";
+import * as erc7007Abi from "../../abi/erc7007Abi.json";
+import { toast } from "react-toastify";
 
 const imgUrls = [
   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
@@ -63,12 +63,7 @@ export const Mint = () => {
     functionName: "mint",
   });
 
-  if (isSuccess) {
-    toast("Success");
-  }
-
   const mintToken = () => {
-    debugger;
     if (write) {
       const args = [
         "0x01", // prompt
@@ -85,10 +80,15 @@ export const Mint = () => {
     }
   };
 
+  useEffect(() => {
+    if (isSuccess && data?.hash) {
+      toast("Success");
+    }
+  }, [data, isSuccess]);
+
   return (
     <Layout>
       <main className="flex flex-col w-full p-4 text-center">
-        <ToastContainer />
         <h4 className="text-center font-bold">Minting!</h4>
         <p className="text-center text-slate-600">
           Select the art that you would like to mint as a ERC-7007

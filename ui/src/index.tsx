@@ -1,6 +1,5 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { MetaMaskSDK } from "@metamask/sdk";
 import {
@@ -25,10 +24,13 @@ import {
 } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { Web3Modal } from "@web3modal/react";
+import "react-toastify/dist/ReactToastify.css"
 
+import "./index.css";
 import { Collection } from "./pages/Collection";
 import { Breed } from "./pages/Breed";
 import { Mint } from "./pages/Mint";
+import { ToastContainer } from "react-toastify";
 
 // Env vars
 const PROJECT_ID = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
@@ -87,5 +89,17 @@ root.render(
       <RouterProvider router={router} />
     </WagmiConfig>
     <Web3Modal projectId={PROJECT_ID} ethereumClient={ethereumClient} />
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
   </React.StrictMode>,
 );
