@@ -2,7 +2,7 @@ import { arrayify } from "ethers/lib/utils";
 import { ethers } from "hardhat";
 
 async function main() {
-  const erc7007Addr = "0x3206A32d726069F01340539cC1BDf5BFd1a4D457";
+  const erc7007Addr = "0x6f8776C3144bc0E6b818140f7837CbDA30E33f8E";
   const erc7007 = await ethers.getContractAt("ERC7007", erc7007Addr);
 
   const aigcData = arrayify("0x1234");

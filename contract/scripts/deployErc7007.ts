@@ -15,4 +15,4 @@ main().catch((error) => {
 });
 
 // https://gnosis-chiado.blockscout.com/address/0x98bE2E4874a8DF479813Da390F68e31023B98c53
-// https://goerli.etherscan.io/address/0x3206A32d726069F01340539cC1BDf5BFd1a4D457
+// https://goerli.etherscan.io/address/0x08A2876155647a5478cd9dAb729A3Dc872C5dEE3
