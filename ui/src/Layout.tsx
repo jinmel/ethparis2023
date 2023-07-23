@@ -8,7 +8,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
   return (
     <div className="h-full flex flex-col">
       <Navbar currentHref={pathCategory} />
-      <div className="flex-grow flex flex-col p-4 w-auto h-full m-0 bg-orange-50">
+      <div className="flex-grow flex flex-col p-4 w-auto m-0 bg-orange-50">
         {children}
       </div>
     </div>

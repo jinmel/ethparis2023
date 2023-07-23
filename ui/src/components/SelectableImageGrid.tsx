@@ -8,7 +8,7 @@ export const SelectableImageGrid = ({
   onMaxImageSelected,
 }: {
   imgUrls: string[];
-  onAllImageSelected: (selectedImgs: number[]) => void;
+  onAllImageSelected: (selectedImgs: string[]) => void;
   maxSelectable: number;
   autoSelect?: boolean;
   onMaxImageSelected?: () => void;
@@ -48,7 +48,9 @@ export const SelectableImageGrid = ({
 
   useEffect(() => {
     if (selected.length >= maxSelectable) {
-      onAllImageSelected(selected);
+      onAllImageSelected(
+        imgUrls.filter((v, urlIdx) => selected.includes(urlIdx)),
+      );
     }
   }, [selected]);
 

@@ -1,5 +1,5 @@
-import React, { createContext } from "react";
-import ReactDOM from "react-dom/client";
+import * as React from "react";
+import { createRoot } from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { MetaMaskSDK } from "@metamask/sdk";
@@ -28,7 +28,6 @@ import { Web3Modal } from "@web3modal/react";
 
 import { Collection } from "./pages/Collection";
 import { Breed } from "./pages/Breed";
-import { ApiClient } from "./services/clients";
 import { Mint } from "./pages/Mint";
 
 // Env vars
@@ -71,8 +70,6 @@ const wagmiConfig = createConfig({
 });
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
-const apiClientContext = createContext(new ApiClient("http://localhost:8080"));
-
 const router = createBrowserRouter([
   { path: "/", element: <Collection /> },
   {
@@ -82,9 +79,7 @@ const router = createBrowserRouter([
   { path: "/breed/mint", element: <Mint /> },
 ]);
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement,
-);
+const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
   <React.StrictMode>

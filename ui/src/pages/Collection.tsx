@@ -1,8 +1,5 @@
 import { Layout } from "../Layout";
 import { NftList } from "../components/NftList";
-import { AINft } from "../services/models";
-import { useState, useEffect, useContext } from "react";
-import { ClientsContext } from "../contexts/ClientsContext";
 import { useTheGraphNFTQuery } from "../services/graph-client";
 import { useAccount } from "wagmi";
 
