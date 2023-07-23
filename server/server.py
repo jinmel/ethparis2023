@@ -33,6 +33,23 @@ app.mount('/images/', StaticFiles(directory=os.environ['IMAGE_DIR']), name='imag
 
 config = Config()
 model = CPPN(config)
+model.linear1.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model.linear2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model.linear3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model.relu2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model.relu3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model.relu4.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+model_fused = torch.ao.quantization.fuse_modules(model, [
+    ['linear1', 'relu2'],
+    ['linear2', 'relu3'],
+    ['linear3', 'relu4'],
+])
+model_prepared = torch.ao.quantization.prepare(model_fused)
+
+# Calibrate with a single batch
+x = torch.rand(1, config.dim_z)
+model_prepared(x)
+model = torch.ao.quantization.convert(model_prepared)
 model.load_state_dict(torch.load(os.environ['CHECKPOINT_PATH']))
 logger.info('Loaded checkpoint from %s', os.environ['CHECKPOINT_PATH'])
 
