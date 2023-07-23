@@ -1,3 +1,5 @@
+export const ML_BACKEND_API_URL = import.meta.env.VITE_ML_BACKEND_API_URL;
+
 interface ImageResponse {
   image: string;
   genome: Array<number>;

@@ -1,6 +1,6 @@
 import { createContext } from "react";
-import { ApiClient } from "../services/clients";
+import { ApiClient, ML_BACKEND_API_URL } from "../services/clients";
 
 export const ClientsContext = createContext({
-  apiClient: new ApiClient("http://localhost:8080"),
+  apiClient: new ApiClient(ML_BACKEND_API_URL),
 });
