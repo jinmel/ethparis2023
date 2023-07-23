@@ -36,10 +36,12 @@ export const Mint = () => {
 
   const onImageSelected = (urls: string[]) => {
     if (urls.length === 0) return;
+    const foundChild = selectedChildren.find((nft) => nft.imageURL === urls[0]);
+
     setCurrentSelected({
-      genome: [123],
-      imageURL: urls[0],
-      name: "Test",
+      genome: foundChild?.genome || [],
+      imageURL: foundChild?.imageURL || "",
+      id: foundChild?.id || "",
     });
   };
 
@@ -76,7 +78,12 @@ export const Mint = () => {
 
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectedImageViewer
-            genome={currentSelected?.genome.toString() || ""}
+            genome={
+              `${currentSelected?.genome
+                .map((g) => g.toString())
+                .slice(0, 3)
+                .join("\n").concat("...") || "-"}`
+            }
             imgUrl={
               currentSelected?.imageURL
                 ? currentSelected.imageURL

@@ -29,18 +29,17 @@ export const Breed = () => {
     return selectedParents.map((index) => nfts[index]);
   }, [selectedParents, nfts]);
 
-  const onBreedClick = useCallback(() => {
-    clients.apiClient
-      .evolve(
-        selectedChildren.map((nft) => nft.genome),
-        25,
-      )
-      .then((res) => {
-        const nextGen = res.map((elem) => {
-          return { imageURL: elem.image, genome: elem.genome };
-        });
-        setNfts(nextGen);
-      });
+  const onBreedClick = useCallback(async () => {
+    console.log(selectedChildren);
+    const response = await clients.apiClient.evolve(
+      selectedChildren.map((nft) => nft.genome),
+      25,
+    );
+
+    const nextGen = await response.map((elem) => {
+      setNfts(nextGen);
+      return { imageURL: elem.image, genome: elem.genome };
+    });
   }, [selectedChildren]);
 
   const startMinting = () => {
