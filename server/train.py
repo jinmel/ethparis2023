@@ -106,15 +106,22 @@ def main(_):
     model = CPPN(config)
     model.to(device)
     model.eval()
-    for name, module in model.named_modules():
-        print(name, module)
-    model.qconfig = torch.quantization.get_default_qconfig('x86')
+    model.linear1.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    model.linear2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    model.linear3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    model.relu2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    model.relu3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
+    model.relu4.qconfig = torch.quantization.get_default_qconfig('fbgemm')
     model_fused = torch.ao.quantization.fuse_modules(model, [
-        ['ln_seq.1', 'ln_seq.2'],
-        ['ln_seq.3', 'ln_seq.4'],
-        ['ln_seq.5', 'ln_seq.6']
+        ['linear1', 'relu2'],
+        ['linear2', 'relu3'],
+        ['linear3', 'relu4'],
     ])
     model_prepared = torch.ao.quantization.prepare(model_fused)
+
+    # Calibrate with a single batch
+    x = torch.rand(1, config.dim_z)
+    model_prepared(x)
     model = torch.ao.quantization.convert(model_prepared)
 
     torch.save(model.state_dict(), os.path.join(FLAGS.output_dir, 'model.pt'))

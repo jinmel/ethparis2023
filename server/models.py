@@ -45,25 +45,19 @@ class CPPN(nn.Module):
         self.l_x = nn.Linear(1, n_nodes, bias=False)
         self.l_y = nn.Linear(1, n_nodes, bias=False)
         self.l_r = nn.Linear(1, n_nodes, bias=False)
+        self.relu1 = nn.ReLU()
+        self.linear1 = nn.Linear(n_nodes, n_nodes)
+        self.relu2 = nn.ReLU()
+        self.linear2 = nn.Linear(n_nodes, n_nodes)
+        self.relu3 = nn.ReLU()
+        self.linear3 = nn.Linear(n_nodes, n_nodes)
+        self.relu4 = nn.ReLU()
+        self.linear4 = nn.Linear(n_nodes, dim_c)
+        self.sigmoid = nn.Sigmoid()
 
-        self.ln_seq = nn.Sequential(
-            nn.ReLU(),
-
-            nn.Linear(n_nodes, n_nodes),
-            nn.ReLU(),
-
-            nn.Linear(n_nodes, n_nodes),
-            nn.ReLU(),
-
-            nn.Linear(n_nodes, n_nodes),
-            nn.ReLU(),
-
-            nn.Linear(n_nodes, dim_c),
-            nn.Sigmoid())
-
-        self._initialize()
         self.quant = torch.ao.quantization.QuantStub()
         self.dequant = torch.ao.quantization.DeQuantStub()
+        self._initialize()
 
     def _initialize(self):
         self.apply(weights_init)
@@ -73,11 +67,16 @@ class CPPN(nn.Module):
         n_points = self.config.dim_x * self.config.dim_y
         x, y, r = get_coordinates(self.config.dim_x, self.config.dim_y, self.config.scale, batch_size)
         z_scaled = torch.reshape(z, (batch_size, 1, self.config.dim_z)) * torch.ones((n_points, 1)) * self.config.scale
-        z_scaled = self.quant(z_scaled)
-        x = self.quant(x)
-        y = self.quant(y)
-        r = self.quant(r)
         u = self.l_z(z_scaled) + self.l_x(x) + self.l_y(y) + self.l_r(r)
-        out = self.ln_seq(u)
-        out = self.dequant(out)
-        return out
+        u = self.quant(u)
+        u = self.relu1(u)
+        u = self.linear1(u)
+        u = self.relu2(u)
+        u = self.linear2(u)
+        u = self.relu3(u)
+        u = self.linear3(u)
+        u = self.relu4(u)
+        u = self.linear4(u)
+        u = self.sigmoid(u)
+        u = self.dequant(u)
+        return u
