@@ -54,6 +54,14 @@ app.get("/test", async (req: Request, res: Response) => {
   });
 });
 
+app.get("/user/:address/status", async (req: Request, res: Response) => {
+  const { address } = req.params;
+  const isRegistered: boolean = await userRegistryContract.isUserExist(address);
+  res.json({
+    isRegistered: isRegistered,
+  });
+});
+
 app.post("/register", async (req: Request, res: Response) => {
   const data = req.body;
   const userAddr = data.userAddr as string;
@@ -72,19 +80,19 @@ app.post("/register", async (req: Request, res: Response) => {
     data.proof as string
   )[0];
 
-  // check if user is regitered
-  const isRegistered: boolean = await userRegistryContract.isUserExist(
-    userAddr
-  );
-  if (isRegistered) {
-    // res.sendStatus(404);
-    res.json({
-      status: 1,
-    });
-    return;
-  }
+  // // check if user is regitered
+  // const isRegistered: boolean = await userRegistryContract.isUserExist(
+  //   userAddr
+  // );
+  // if (isRegistered) {
+  //   // res.sendStatus(404);
+  //   res.json({
+  //     status: 1,
+  //   });
+  //   return;
+  // }
 
-  console.log(`isRegistered: ${isRegistered}`);
+  // console.log(`isRegistered: ${isRegistered}`);
 
   const xxx = await signUpContract.worldIDRouter();
   console.log(`xxx: ${xxx}`);
