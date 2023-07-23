@@ -45,18 +45,16 @@ class CPPN(nn.Module):
         self.l_x = nn.Linear(1, n_nodes, bias=False)
         self.l_y = nn.Linear(1, n_nodes, bias=False)
         self.l_r = nn.Linear(1, n_nodes, bias=False)
-        self.relu1 = nn.ReLU()
+        self.relu1 = nn.Tanh()
         self.linear1 = nn.Linear(n_nodes, n_nodes)
-        self.relu2 = nn.ReLU()
+        self.relu2 = nn.Tanh()
         self.linear2 = nn.Linear(n_nodes, n_nodes)
-        self.relu3 = nn.ReLU()
+        self.relu3 = nn.Tanh()
         self.linear3 = nn.Linear(n_nodes, n_nodes)
-        self.relu4 = nn.ReLU()
+        self.relu4 = nn.Tanh()
         self.linear4 = nn.Linear(n_nodes, dim_c)
         self.sigmoid = nn.Sigmoid()
 
-        self.quant = torch.ao.quantization.QuantStub()
-        self.dequant = torch.ao.quantization.DeQuantStub()
         self._initialize()
 
     def _initialize(self):
@@ -68,7 +66,6 @@ class CPPN(nn.Module):
         x, y, r = get_coordinates(self.config.dim_x, self.config.dim_y, self.config.scale, batch_size)
         z_scaled = torch.reshape(z, (batch_size, 1, self.config.dim_z)) * torch.ones((n_points, 1)) * self.config.scale
         u = self.l_z(z_scaled) + self.l_x(x) + self.l_y(y) + self.l_r(r)
-        u = self.quant(u)
         u = self.relu1(u)
         u = self.linear1(u)
         u = self.relu2(u)
@@ -78,5 +75,4 @@ class CPPN(nn.Module):
         u = self.relu4(u)
         u = self.linear4(u)
         u = self.sigmoid(u)
-        u = self.dequant(u)
         return u
