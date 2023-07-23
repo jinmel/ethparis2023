@@ -1,54 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Layout } from "../Layout";
 import { Button } from "../components/Button";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { SelectedImageViewer } from "../components/SelectedImageViewer";
-import { AIGeneratedChildren, ERC7007Info } from "../services/models";
-import { useLocation, useNavigate } from "react-router-dom";
+import { ERC7007Info } from "../services/models";
+import { useLocation } from "react-router-dom";
 import { useContractWrite } from "wagmi";
 import * as erc7007Abi from "../../abi/erc7007Abi.json";
 import { toast } from "react-toastify";
+import { AINft } from "../services/models";
+
 
 export const Mint = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const nfts = location.state?.nfts as AINft[];
 
-  const { nfts: selectedChildren }: { nfts: AIGeneratedChildren[] } =
-    location.state;
-
-  useEffect(() => {
-    if (!selectedChildren || selectedChildren.length === 0) {
-      navigate("/breed");
-    }
-  }, [selectedChildren, navigate]);
-
-  const [currentSelected, setCurrentSelected] = useState<AIGeneratedChildren>();
-
-  const [mintedToken, setMintedToken] = useState<
-    ERC7007Info & { address: string; id: string }
-  >();
-
-  const { data, isLoading, isSuccess, write } = useContractWrite({
+  const { data, isSuccess, write } = useContractWrite({
     address: `0x${import.meta.env.VITE_ERC7007_ADDR}`,
     abi: erc7007Abi,
     functionName: "mint",
   });
 
-  const onImageSelected = (urls: string[]) => {
-    if (urls.length === 0) return;
-    const foundChild = selectedChildren.find((nft) => nft.imageURL === urls[0]);
-
-    setCurrentSelected({
-      genome: foundChild?.genome || [],
-      imageURL: foundChild?.imageURL || "",
-      id: foundChild?.id || "",
-    });
-  };
-
   const mintToken = () => {
     if (write) {
       const args = [
-        "0x01", // prompt
+        "0x01", // prompt (genome)
         "0x01", // aigcData
         "some string", // uri
         "0x01", // proof
@@ -68,6 +44,24 @@ export const Mint = () => {
     }
   }, [data, isSuccess]);
 
+  const [selected, setSelected] = useState<number[]>([]);
+  const onImageClick = (index: number) => {
+    setSelected([index]);
+  }
+
+  const tokenInfo: ERC7007Info | undefined = useMemo(() => {
+    if (nfts.length > 0 && selected.length > 0) {
+      const nftInfo = nfts[selected[0]];
+      return {
+        genome: nftInfo.genome,
+        imgUrl: nftInfo.imageURL,
+        name: "Zenetik NFT",
+      }
+    } else {
+      return undefined;
+    }
+  }, [selected, nfts]);
+
   return (
     <Layout>
       <main className="flex flex-col w-full p-4 text-center">
@@ -78,17 +72,8 @@ export const Mint = () => {
 
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectedImageViewer
-            genome={
-              `${currentSelected?.genome
-                .map((g) => g.toString())
-                .slice(0, 3)
-                .join("\n").concat("...") || "-"}`
-            }
-            imgUrl={
-              currentSelected?.imageURL
-                ? currentSelected.imageURL
-                : "/400x300.svg"
-            }
+            genome={tokenInfo?.genome}
+            imgUrl={tokenInfo?.imgUrl ? tokenInfo.imgUrl : "/400x300.svg"}
           />
         </section>
 
@@ -98,10 +83,9 @@ export const Mint = () => {
         <hr />
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectableImageGrid
-            autoSelect={true}
-            imgUrls={selectedChildren?.map((nft) => nft.imageURL) || []}
-            onAllImageSelected={onImageSelected}
-            maxSelectable={1}
+            imgUrls={nfts.map((nft) => nft.imageURL)}
+            selected={selected}
+            onImageClick={onImageClick}
           />
         </section>
       </main>

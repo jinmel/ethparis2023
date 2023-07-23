@@ -16,7 +16,7 @@ export type RegisterRequest = {
 
 export const useRelayerRegister = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<{data : string}>();
   const [error, setError] = useState<string>();
 
   const call = useCallback(

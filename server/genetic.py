@@ -32,7 +32,7 @@ def evolution(selected, m_rate, num):
         c2 = mutation(c2, m_rate)
         children.append(c1)
         children.append(c2)
-    return random.choices(children, num)
+    return random.choices(children, k=num)
 
 
 def populate(size, dim):

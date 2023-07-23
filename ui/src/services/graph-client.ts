@@ -53,7 +53,7 @@ export const useTheGraphNFTQuery = ({
     if (!loading && address) {
       asyncFn();
     }
-  }, [address]);
+  }, [address, loading]);
 
   return { data, loading, error };
 };

@@ -1,5 +1,5 @@
 import { CredentialType, IDKitWidget, ISuccessResult } from "@worldcoin/idkit";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { Layout } from "../Layout";
 import { Button } from "../components/Button";
 import { useAccount } from "wagmi";
@@ -9,14 +9,14 @@ import { useRelayerGetStatus, useRelayerRegister } from "../services/relayer";
 const action = "signup";
 const appID = "app_574b973f44f8e4ce8aef8b29c16aea75";
 const signal = "";
-const credentialType = CredentialType.Orb;
+// const credentialType = CredentialType.Orb;
 
 export const Landing = () => {
   const { address } = useAccount();
 
   const { data: isRegistered } = useRelayerGetStatus(address || "");
 
-  const { call, data, error, loading } = useRelayerRegister();
+  const { call } = useRelayerRegister();
 
   const handleProof = useCallback(() => {
     return new Promise<void>((resolve) => {

@@ -5,7 +5,7 @@ import { useAccount } from "wagmi";
 
 export const Collection = () => {
   const { address } = useAccount();
-  const { data, error, loading } = useTheGraphNFTQuery({ address });
+  const { data, loading } = useTheGraphNFTQuery({ address });
 
   const CollectionView = () => {
     if (loading) {

@@ -7,10 +7,10 @@ from typing import List
 import uuid
 
 import ezkl
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel
 import numpy as np
 import torch
 import torchvision
@@ -33,23 +33,6 @@ app.mount('/images/', StaticFiles(directory=os.environ['IMAGE_DIR']), name='imag
 
 config = Config()
 model = CPPN(config)
-model.linear1.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model.linear2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model.linear3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model.relu2.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model.relu3.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model.relu4.qconfig = torch.quantization.get_default_qconfig('fbgemm')
-model_fused = torch.ao.quantization.fuse_modules(model, [
-    ['linear1', 'relu2'],
-    ['linear2', 'relu3'],
-    ['linear3', 'relu4'],
-])
-model_prepared = torch.ao.quantization.prepare(model_fused)
-
-# Calibrate with a single batch
-x = torch.rand(1, config.dim_z)
-model_prepared(x)
-model = torch.ao.quantization.convert(model_prepared)
 model.load_state_dict(torch.load(os.environ['CHECKPOINT_PATH']))
 logger.info('Loaded checkpoint from %s', os.environ['CHECKPOINT_PATH'])
 
@@ -83,7 +66,7 @@ def convert_tensor_to_images(tensors):
         filename = str(uuid.uuid4()) + '.png'
         file_path = os.path.join(os.environ['IMAGE_DIR'], filename)
         torchvision.utils.save_image(tensor, file_path)
-        image_uris.append('http://0.0.0.0:8080/images/' + filename)
+        image_uris.append('/images/' + filename)
         logger.info('Saved %d th image to %s', i, file_path)
     return image_uris
 
@@ -127,8 +110,7 @@ async def seed(size: int):
 async def evolve(r: EvolveRequest):
     """Evolve image from selected genomes from the user."""
     parents = r.genomes
-    gen_num = (25 - len(parents)) // 2
-    children = genetic.evolution(r.genomes, 0.4, (25 - r.num_children) // 2)
+    children = genetic.evolution(r.genomes, 0.2, r.num_children - len(parents))
     next_batch = np.array(parents + children)
     random.shuffle(next_batch)
     next_batch = torch.tensor(next_batch)
