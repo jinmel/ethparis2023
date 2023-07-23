@@ -41,7 +41,7 @@ class CPPN(nn.Module):
         dim_c = config.dim_c
         n_nodes = config.n_nodes
 
-        self.l_z = nn.Linear(dim_z, n_nodes)
+        self.l_z = nn.Linear(dim_z, n_nodes, bias=False)
         self.l_x = nn.Linear(1, n_nodes, bias=False)
         self.l_y = nn.Linear(1, n_nodes, bias=False)
         self.l_r = nn.Linear(1, n_nodes, bias=False)
@@ -62,6 +62,8 @@ class CPPN(nn.Module):
             nn.Sigmoid())
 
         self._initialize()
+        # self.quant = torch.ao.quantization.QuantStub()
+        # self.dequant = torch.ao.quantization.DeQuantStub()
 
     def _initialize(self):
         self.apply(weights_init)
@@ -69,9 +71,10 @@ class CPPN(nn.Module):
     def forward(self, z):
         batch_size = z.shape[0]
         n_points = self.config.dim_x * self.config.dim_y
+        # z = self.quant(z)
         x, y, r = get_coordinates(self.config.dim_x, self.config.dim_y, self.config.scale, batch_size)
-        z = torch.tensor(z, dtype=torch.float32)
         z_scaled = torch.reshape(z, (batch_size, 1, self.config.dim_z)) * torch.ones((n_points, 1)) * self.config.scale
         u = self.l_z(z_scaled) + self.l_x(x) + self.l_y(y) + self.l_r(r)
         out = self.ln_seq(u)
+        # out = self.dequant(out)
         return out

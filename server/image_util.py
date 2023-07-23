@@ -22,6 +22,7 @@ def get_coordinates(dim_x, dim_y, scale=1.0, batch_size=1):
 
 def generate(model, z):
     """Generate image from given genome."""
+    z = torch.tensor(z, dtype=torch.float16)
     result = model(z)
     result = result.view(-1, model.config.dim_x, model.config.dim_y, model.config.dim_c).cpu()
     result = result.permute((0, 3, 1, 2))

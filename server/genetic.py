@@ -1,5 +1,7 @@
 """Genetic algorithms."""
 
+import random
+
 import numpy as np
 
 
@@ -30,7 +32,7 @@ def evolution(selected, m_rate, num):
         c2 = mutation(c2, m_rate)
         children.append(c1)
         children.append(c2)
-    return children
+    return random.choices(children, num)
 
 
 def populate(size, dim):
