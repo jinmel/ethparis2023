@@ -108,7 +108,7 @@ def main(_):
     model.eval()
     for name, module in model.named_modules():
         print(name, module)
-    model.qconfig = torch.quantization.get_default_qconfig('qnnpack')
+    model.qconfig = torch.quantization.get_default_qconfig('x86')
     model_fused = torch.ao.quantization.fuse_modules(model, [
         ['ln_seq.1', 'ln_seq.2'],
         ['ln_seq.3', 'ln_seq.4'],
