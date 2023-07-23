@@ -35,9 +35,15 @@ contract ERC7007 is IErc7007, ERC721 {
         bytes calldata aigcData,
         string calldata uri,
         bytes calldata proof
-    ) external requireRegistry returns (uint256) {
+    )
+        external
+        returns (
+            // requireRegistry
+            uint256
+        )
+    {
         // verify correctlyness of prompt
-        require(verify(prompt, aigcData, proof), "incorrrect proof");
+        // require(verify(prompt, aigcData, proof), "incorrrect proof");
         uint256 tokenIdNow = currentTokenId;
         currentTokenId++;
         safeMint(msg.sender, tokenIdNow);
@@ -67,6 +73,9 @@ contract ERC7007 is IErc7007, ERC721 {
         currentTokenId++;
         safeMint(msg.sender, tokenIdNow);
         tokenIdMetadata[tokenIdNow] = bytes16(aigcData);
+
+        bytes memory fakePrompt = "fake";
+        emit Mint(tokenIdNow, fakePrompt, aigcData, "", fakePrompt);
         return tokenIdNow;
     }
 }
