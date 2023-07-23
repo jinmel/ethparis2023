@@ -2,26 +2,69 @@ import React, { createContext } from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { Collection } from "./pages/Collection";
-import { Breed } from "./pages/Breed";
-import { ApiClient } from "./services/clients";
-import { Mint } from "./pages/Mint";
+import { MetaMaskSDK } from "@metamask/sdk";
 import {
   EthereumClient,
   w3mConnectors,
   w3mProvider,
 } from "@web3modal/ethereum";
-import { WagmiConfig, configureChains, createConfig } from "wagmi";
-import { arbitrum, mainnet, polygon } from "wagmi/chains";
+import {
+  WagmiConfig,
+  WindowProvider,
+  configureChains,
+  createConfig,
+} from "wagmi";
+import {
+  gnosisChiado,
+  goerli,
+  polygonZkEvmTestnet,
+  celoAlfajores,
+  celoCannoli,
+  lineaTestnet,
+  hardhat,
+} from "wagmi/chains";
+import { InjectedConnector } from "wagmi/connectors/injected";
 import { Web3Modal } from "@web3modal/react";
 
-const chains = [arbitrum, mainnet, polygon];
+import { Collection } from "./pages/Collection";
+import { Breed } from "./pages/Breed";
+import { ApiClient } from "./services/clients";
+import { Mint } from "./pages/Mint";
+
+// Env vars
 const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+
+// Wagmi setup
+const chains = [
+  gnosisChiado,
+  goerli,
+  polygonZkEvmTestnet,
+  celoAlfajores,
+  celoCannoli,
+  lineaTestnet,
+  hardhat,
+];
+
+const MMSDK = new MetaMaskSDK({
+  injectProvider: true,
+  dappMetadata: { name: "ZKML AiArt" },
+});
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: [
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Metamask SDK",
+        getProvider() {
+          return MMSDK.getProvider() as unknown as WindowProvider;
+        },
+      },
+    }),
+    ...w3mConnectors({ projectId, chains }),
+  ],
   publicClient,
 });
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
