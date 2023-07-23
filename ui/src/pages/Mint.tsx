@@ -15,7 +15,7 @@ export const Mint = () => {
   const location = useLocation();
   const nfts = location.state?.nfts as AINft[];
 
-  const { data, isLoading, isSuccess, write } = useContractWrite({
+  const { data, isSuccess, write } = useContractWrite({
     address: `0x${import.meta.env.VITE_ERC7007_ADDR}`,
     abi: erc7007Abi,
     functionName: "mint",

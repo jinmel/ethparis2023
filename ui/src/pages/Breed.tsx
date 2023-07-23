@@ -44,7 +44,7 @@ export const Breed = () => {
         setNfts(nextGen);
         setSelectedParents([]);
       });
-  }, [selectedNfts]);
+  }, [selectedNfts, clients]);
 
   const onImageClick = (index: number) => {
     if (selectedParents.includes(index)) {
@@ -57,7 +57,7 @@ export const Breed = () => {
 
   const startMinting = useCallback(() => {
     navigate("/breed/mint", { state: { nfts: nfts } });
-  }, [nfts]);
+  }, [nfts, navigate]);
 
   return (
     <Layout>

@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 const IMAGE_BASE_URL = import.meta.env.VITE_ML_BACKEND_API_URL;
 
 export const SelectableImageGrid = ({
