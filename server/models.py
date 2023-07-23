@@ -71,10 +71,12 @@ class CPPN(nn.Module):
     def forward(self, z):
         batch_size = z.shape[0]
         n_points = self.config.dim_x * self.config.dim_y
-        z = self.quant(z)
         x, y, r = get_coordinates(self.config.dim_x, self.config.dim_y, self.config.scale, batch_size)
-        # z_scaled = torch.reshape(z, (batch_size, 1, self.config.dim_z)) * torch.ones((n_points, 1)) * 8
-        z_scaled = z
+        z_scaled = torch.reshape(z, (batch_size, 1, self.config.dim_z)) * torch.ones((n_points, 1)) * self.config.scale
+        z_scaled = self.quant(z_scaled)
+        x = self.quant(x)
+        y = self.quant(y)
+        r = self.quant(r)
         u = self.l_z(z_scaled) + self.l_x(x) + self.l_y(y) + self.l_r(r)
         out = self.ln_seq(u)
         out = self.dequant(out)
