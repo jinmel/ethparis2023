@@ -4,6 +4,7 @@ import { Button } from "../components/Button";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { SelectedImageViewer } from "../components/SelectedImageViewer";
 import { ERC7007Info } from "../services/models";
+import { useLocation } from "react-router-dom";
 
 const imgUrls = [
   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
@@ -33,6 +34,7 @@ const imgUrls = [
   "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
 ];
 export const Mint = () => {
+  const location = useLocation();
   const [tokenInfo, setTokenInfo] = useState<ERC7007Info>({
     genome: "",
     imgUrl: "",

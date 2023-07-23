@@ -3,16 +3,22 @@ interface ImageResponse {
   genome: Array<number>;
 }
 
+interface ProofResponse {
+  image: string;
+  genome: Array<number>;
+  proof: Uint8Array;
+}
+
 export class ApiClient {
   baseUri: string;
 
-  contructor(baseUri: string) {
+  constructor(baseUri: string) {
     this.baseUri = baseUri;
   }
 
   async getSeed(size: number): Promise<Array<ImageResponse>> {
     return fetch(
-      `${this.baseUri}/generate/seed` + new URLSearchParams({ size: size.toString() }), {
+      `${this.baseUri}/generate/seed?` + new URLSearchParams({ size: size.toString() }), {
         method: 'GET',
         mode: 'cors',
       })
@@ -29,15 +35,19 @@ export class ApiClient {
   }
 
   async evolve(genomes: Array<Array<number>>, size: number): Promise<Array<ImageResponse>> {
-    return fetch(`${this.baseUri}/evolve`, {
+    return fetch(`${this.baseUri}/generate/evolve`, {
       method: 'POST',
       mode: 'cors',
       body: JSON.stringify({ genomes: genomes , num_children: size}),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     })
     .then(res => res.json())
   }
 
-  async prove(genome: Array<number>): Promise<Object> {
+  async prove(genome: Array<number>): Promise<ProofResponse> {
     return fetch(`${this.baseUri}/prove`, {
       method: 'POST',
       mode: 'cors',
