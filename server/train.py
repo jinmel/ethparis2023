@@ -101,8 +101,10 @@ def export(
 
 
 def main(_):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     config = Config()
     model = CPPN(config)
+    model.to(device)
     model.eval()
     for name, module in model.named_modules():
         print(name, module)
