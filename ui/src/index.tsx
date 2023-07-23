@@ -24,13 +24,14 @@ import {
 } from "wagmi/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
 import { Web3Modal } from "@web3modal/react";
-import "react-toastify/dist/ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css";
 
 import "./index.css";
 import { Collection } from "./pages/Collection";
 import { Breed } from "./pages/Breed";
 import { Mint } from "./pages/Mint";
 import { ToastContainer } from "react-toastify";
+import { Landing } from "./pages/Landing";
 
 // Env vars
 const PROJECT_ID = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
@@ -73,7 +74,8 @@ const wagmiConfig = createConfig({
 const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const router = createBrowserRouter([
-  { path: "/", element: <Collection /> },
+  { path: "/", element: <Landing /> },
+  { path: "/collection", element: <Collection />, },
   {
     path: "/breed",
     element: <Breed />,

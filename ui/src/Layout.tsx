@@ -1,10 +1,21 @@
 import { PropsWithChildren } from "react";
 import { Navbar } from "./components/Navbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAccount } from "wagmi";
 
 export const Layout = ({ children }: PropsWithChildren) => {
   const { pathname } = useLocation();
+  const { address } = useAccount();
+  const navigate = useNavigate();
+
   const pathCategory = `/${pathname.split("/")[1] ?? ""}`;
+
+  if (pathCategory !== "/") {
+    if (!address) {
+      navigate("/");
+    }
+  }
+
   return (
     <div className="h-full flex flex-col">
       <Navbar currentHref={pathCategory} />
