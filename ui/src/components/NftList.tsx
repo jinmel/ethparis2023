@@ -1,8 +1,8 @@
 import { NftItem } from "../components/NftItem";
-import { AINft } from "../services/models";
+import { OwnedAINFT } from "../services/models";
 
 interface NftListProps {
-  nfts: AINft[];
+  nfts: OwnedAINFT[];
   onNftItemClick: (index: number) => void;
 }
 

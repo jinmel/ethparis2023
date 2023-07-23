@@ -58,13 +58,3 @@ export class ApiClient {
     }).then((res) => res.json());
   }
 }
-
-export class GraphClient {
-  baseUri: string;
-  apiKey: string;
-
-  constructor(baseUri: string, apiKey: string) {
-    this.baseUri = baseUri;
-    this.apiKey = apiKey;
-  }
-}

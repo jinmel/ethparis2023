@@ -1,9 +1,7 @@
-import { Fragment } from "react";
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { Web3Button } from "@web3modal/react";
-import { useConnect } from "wagmi";
 
 const navigation = [
   { name: "My Collection", href: "/" },
@@ -15,7 +13,6 @@ function classNames(...classes: string[]) {
 }
 
 export const Navbar = ({ currentHref }: { currentHref: string }) => {
-  const { connect, connectors } = useConnect();
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }: { open: boolean }) => (
@@ -58,7 +55,6 @@ export const Navbar = ({ currentHref }: { currentHref: string }) => {
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <Web3Button />
-                {/* <button onClick={() => connect({connector: connectors[0]})}>Connect</button> */}
               </div>
             </div>
           </div>
