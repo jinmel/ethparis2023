@@ -18,53 +18,43 @@ export class ApiClient {
 
   async getSeed(size: number): Promise<Array<ImageResponse>> {
     return fetch(
-      `${this.baseUri}/generate/seed?` + new URLSearchParams({ size: size.toString() }), {
-        method: 'GET',
-        mode: 'cors',
-      })
-      .then(res => res.json())
+      `${this.baseUri}/generate/seed?` +
+        new URLSearchParams({ size: size.toString() }),
+      {
+        method: "GET",
+        mode: "cors",
+      },
+    ).then((res) => res.json());
   }
 
   async generate(genomes: Array<Array<number>>): Promise<Array<ImageResponse>> {
     return fetch(`${this.baseUri}/generate`, {
-      method: 'POST',
-      mode: 'cors',
+      method: "POST",
+      mode: "cors",
       body: JSON.stringify({ genomes: genomes }),
-    })
-    .then(res => res.json())
+    }).then((res) => res.json());
   }
 
-  async evolve(genomes: Array<Array<number>>, size: number): Promise<Array<ImageResponse>> {
+  async evolve(
+    genomes: Array<Array<number>>,
+    size: number,
+  ): Promise<Array<ImageResponse>> {
     return fetch(`${this.baseUri}/generate/evolve`, {
-      method: 'POST',
-      mode: 'cors',
-      body: JSON.stringify({ genomes: genomes , num_children: size}),
+      method: "POST",
+      mode: "cors",
+      body: JSON.stringify({ genomes: genomes, num_children: size }),
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    }).then((res) => res.json());
   }
 
   async prove(genome: Array<number>): Promise<ProofResponse> {
     return fetch(`${this.baseUri}/prove`, {
-      method: 'POST',
-      mode: 'cors',
+      method: "POST",
+      mode: "cors",
       body: JSON.stringify({ genome: genome }),
-    })
-    .then(res => res.json())
+    }).then((res) => res.json());
   }
 }
-
-export class GraphClient {
-  baseUri: string;
-  apiKey: string;
-
-  constructor(baseUri: string, apiKey: string) {
-    this.baseUri = baseUri;
-    this.apiKey = apiKey;
-  }
-}
-
-

@@ -9,3 +9,9 @@ export type ERC7007Info = {
   imgUrl: string;
   genome: string;
 };
+
+export type OwnedAINFT = {
+  id: string;
+  owner: string;
+  tokenId: string;
+};

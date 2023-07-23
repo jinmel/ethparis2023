@@ -11,6 +11,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, field_validator
+import numpy as np
 import torch
 import torchvision
 
@@ -40,36 +41,16 @@ class GenerateRequest(BaseModel):
     """Image model."""
     genomes: List[List[float]]
 
-    @field_validator('genomes')
-    def check_genomes(cls, v):
-        """Check genome length."""
-        for genome in v:
-            if len(genome) != config.dim_z:
-                raise ValueError('Invalid genome length')
-
 
 class EvolveRequest(BaseModel):
     """Evolve request."""
     genomes: List[List[float]]
     num_children: int
 
-    @field_validator('genomes')
-    def check_genomes(cls, v):
-        """Check genome length."""
-        for genome in v:
-            if len(genome) != config.dim_z:
-                raise ValueError('Invalid genome length')
-
 
 class ProveRequest(BaseModel):
     """Prove request."""
     genome: List[float]
-
-    @field_validator('genome')
-    def check_genomes(cls, v):
-        """Check genome length."""
-        if len(v) != config.dim_z:
-            raise ValueError('Invalid genome length')
 
 
 class Image(BaseModel):
@@ -85,7 +66,7 @@ def convert_tensor_to_images(tensors):
         filename = str(uuid.uuid4()) + '.png'
         file_path = os.path.join(os.environ['IMAGE_DIR'], filename)
         torchvision.utils.save_image(tensor, file_path)
-        image_uris.append('/images/' + filename)
+        image_uris.append('http://0.0.0.0:8080/images/' + filename)
         logger.info('Saved %d th image to %s', i, file_path)
     return image_uris
 
@@ -128,17 +109,16 @@ async def seed(size: int):
 @app.post('/generate/evolve')
 async def evolve(r: EvolveRequest):
     """Evolve image from selected genomes from the user."""
-    for genome in r.genomes:
-        if len(genome) != 32:
-            raise HTTPException(status_code=400, detail='Invalid genome length')
     parents = r.genomes
-    children = genetic.evolution(r.genomes, 0.4, r.num_children)
-    next_batch = parents + children
+    gen_num = (25 - len(parents)) // 2
+    children = genetic.evolution(r.genomes, 0.4, (25 - r.num_children) // 2)
+    next_batch = np.array(parents + children)
     random.shuffle(next_batch)
+    next_batch = torch.tensor(next_batch)
     result = image_util.generate(model, next_batch)
     image_uris = convert_tensor_to_images(result)
     response = []
-    for uri, genome in zip(image_uris, r.genomes):
+    for uri, genome in zip(image_uris, next_batch):
         response.append(Image(image=uri, genome=genome))
     return response
 
@@ -146,5 +126,3 @@ async def evolve(r: EvolveRequest):
 @app.post('/prove')
 async def prove(r: ProveRequest):
     ezkl.export()
-
-

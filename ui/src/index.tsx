@@ -32,7 +32,7 @@ import { ApiClient } from "./services/clients";
 import { Mint } from "./pages/Mint";
 
 // Env vars
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+const PROJECT_ID = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
 
 // Wagmi setup
 const chains = [
@@ -50,7 +50,9 @@ const MMSDK = new MetaMaskSDK({
   dappMetadata: { name: "ZKML AiArt" },
 });
 
-const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
+const { publicClient } = configureChains(chains, [
+  w3mProvider({ projectId: PROJECT_ID }),
+]);
 const wagmiConfig = createConfig({
   autoConnect: true,
   connectors: [
@@ -63,7 +65,7 @@ const wagmiConfig = createConfig({
         },
       },
     }),
-    ...w3mConnectors({ projectId, chains }),
+    ...w3mConnectors({ projectId: PROJECT_ID, chains }),
   ],
   publicClient,
 });
@@ -89,6 +91,6 @@ root.render(
     <WagmiConfig config={wagmiConfig}>
       <RouterProvider router={router} />
     </WagmiConfig>
-    <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+    <Web3Modal projectId={PROJECT_ID} ethereumClient={ethereumClient} />
   </React.StrictMode>,
 );
