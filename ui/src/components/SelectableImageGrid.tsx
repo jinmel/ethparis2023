@@ -34,8 +34,8 @@ export const SelectableImageGrid = ({
     } else {
       // Replace the earliest selected image with the newly selected one
       setSelected((prev) => {
-        if(prev.length < maxSelectable) {
-          return [...prev, idx]
+        if (prev.length < maxSelectable) {
+          return [...prev, idx];
         }
 
         const [, ...others] = prev;
@@ -47,10 +47,10 @@ export const SelectableImageGrid = ({
   };
 
   useEffect(() => {
-    if(selected.length >= maxSelectable) {
+    if (selected.length >= maxSelectable) {
       onAllImageSelected(selected);
     }
-  }, [selected])
+  }, [selected]);
 
   return (
     <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mx-auto">

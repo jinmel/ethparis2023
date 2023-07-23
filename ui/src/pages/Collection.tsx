@@ -4,7 +4,6 @@ import { AINft } from "../services/models";
 import React, { useState, useEffect, useContext } from "react";
 import { ClientsContext } from "../contexts/ClientsContext";
 
-
 const nfts: AINft[] = [
   {
     id: "122",

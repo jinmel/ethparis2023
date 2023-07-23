@@ -1,23 +1,24 @@
 import { useState, useEffect, useContext, useMemo, useCallback } from "react";
 import { Layout } from "../Layout";
 import { AINft } from "../services/models";
-import { ClientsContext } from "../contexts/ClientsContext"
+import { ClientsContext } from "../contexts/ClientsContext";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
 import useSWR from "swr";
 
-
 export const Breed = () => {
   const clients = useContext(ClientsContext);
   const [nfts, setNfts] = useState<AINft[]>([]);
-  const { data } = useSWR("/generate/seed", () => clients.apiClient.getSeed(25));
+  const { data } = useSWR("/generate/seed", () =>
+    clients.apiClient.getSeed(25),
+  );
   const navigate = useNavigate();
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!data) return;
-    const nfts = data.map(elem => {
-        return {imageURL: elem.image, genome: elem.genome};
+    const nfts = data.map((elem) => {
+      return { imageURL: elem.image, genome: elem.genome };
     });
     setNfts(nfts);
   }, [data]);
@@ -27,19 +28,23 @@ export const Breed = () => {
     return selectedParents.map((index) => nfts[index]);
   }, [selectedParents, nfts]);
 
-
   const onBreedClick = useCallback(() => {
-    clients.apiClient.evolve(selectedNfts.map(nft => nft.genome), 25).then((res) => {
-      const nextGen = res.map(elem => {
-          return {imageURL: elem.image, genome: elem.genome}
+    clients.apiClient
+      .evolve(
+        selectedNfts.map((nft) => nft.genome),
+        25,
+      )
+      .then((res) => {
+        const nextGen = res.map((elem) => {
+          return { imageURL: elem.image, genome: elem.genome };
+        });
+        setNfts(nextGen);
       });
-      setNfts(nextGen);
-    })
   }, [selectedNfts]);
 
   const startMinting = () => {
-    navigate("/breed/mint", {state: {selectedNfts: selectedNfts}});
-  }
+    navigate("/breed/mint", { state: { selectedNfts: selectedNfts } });
+  };
 
   return (
     <Layout>
@@ -50,14 +55,14 @@ export const Breed = () => {
         </p>
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectableImageGrid
-            imgUrls={nfts.map(nft => nft.imageURL)}
+            imgUrls={nfts.map((nft) => nft.imageURL)}
             onAllImageSelected={(selected) => setSelectedParents(selected)}
             maxSelectable={3}
           />
         </section>
 
         <section className="md:px-12 px-4 py-4 text-center flex mx-auto gap-8">
-          <Button text="Breed new generation" onClick={onBreedClick}/>
+          <Button text="Breed new generation" onClick={onBreedClick} />
           <Button text="Select generation" onClick={startMinting} />
         </section>
       </main>
