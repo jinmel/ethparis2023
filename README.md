@@ -5,4 +5,4 @@
  - jinsuk.eth
  - cwkang.eth
  - chee
- - Jihun
+ - Jihoon
