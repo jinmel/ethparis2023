@@ -101,19 +101,19 @@ def export(
 
 
 def main(_):
-    torch.set_default_dtype(torch.float16)
     config = Config()
     model = CPPN(config)
     model.eval()
     for name, module in model.named_modules():
         print(name, module)
-    # model.qconfig = torch.quantization.get_default_qconfig('qnnpack')
-    # model_fused = torch.ao.quantization.fuse_modules(model, [
-    #     ['ln_seq.1', 'ln_seq.2'],
-    #     ['ln_seq.3', 'ln_seq.4'],
-    #     ['ln_seq.5', 'ln_seq.6']
-    # ])
-    # model_prepared = torch.ao.quantization.prepare_qat(model_fused.train())
+    model.qconfig = torch.quantization.get_default_qconfig('qnnpack')
+    model_fused = torch.ao.quantization.fuse_modules(model, [
+        ['ln_seq.1', 'ln_seq.2'],
+        ['ln_seq.3', 'ln_seq.4'],
+        ['ln_seq.5', 'ln_seq.6']
+    ])
+    model_prepared = torch.ao.quantization.prepare(model_fused)
+    model = torch.ao.quantization.convert(model_prepared)
 
     torch.save(model.state_dict(), os.path.join(FLAGS.output_dir, 'model.pt'))
     with torch.no_grad():
@@ -124,6 +124,7 @@ def main(_):
                input_shape=[1, config.dim_z],
                run_gen_witness=False,
                run_calibrate_settings=False)
+    logging.info('Model exported to %s', FLAGS.output_dir)
 
 
 if __name__ == '__main__':
