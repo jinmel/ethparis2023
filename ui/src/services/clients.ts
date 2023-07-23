@@ -19,14 +19,21 @@ export class ApiClient {
   }
 
   async getSeed(size: number): Promise<Array<ImageResponse>> {
-    return fetch(
+    const response = await fetch(
       `${this.baseUri}/generate/seed?` +
         new URLSearchParams({ size: size.toString() }),
       {
         method: "GET",
         mode: "cors",
       },
-    ).then((res) => res.json());
+    );
+
+    const data: { image: string; genome: number[] }[] = await response.json();
+
+    return data.map((d) => {
+      d.image = `${this.baseUri}${d.image}`;
+      return d;
+    });
   }
 
   async generate(genomes: Array<Array<number>>): Promise<Array<ImageResponse>> {

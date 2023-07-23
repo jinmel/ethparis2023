@@ -19,36 +19,41 @@ export const useRelayerRegister = () => {
   const [data, setData] = useState<any>();
   const [error, setError] = useState<string>();
 
-  const call = useCallback(async (req: RegisterRequest) => {
-    if (!loading && req) {
-      setData(undefined);
-      setError(undefined);
+  const call = useCallback(
+    async (req: RegisterRequest) => {
+      if (!loading && req) {
+        setData(undefined);
+        setError(undefined);
 
-      setLoading(true);
-      const response = await fetch(`${VITE_RELAYER_URL}/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(req),
-      });
+        setLoading(true);
+        const response = await fetch(`${VITE_RELAYER_URL}/register`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(req),
+        });
 
-      if (response.ok) {
-        const json = await response.json();
-        setData(json);
-      } else {
-        setError(`Got error when querying: ${await response.json()}`);
+        if (response.ok) {
+          const json = await response.json();
+          setData(json);
+        } else {
+          setError(`Got error when querying: ${await response.json()}`);
+        }
+        setLoading(false);
       }
-      setLoading(false);
-    }
-  }, [loading]);
+    },
+    [loading],
+  );
 
   return { data, loading, error, call };
 };
 
 export const useRelayerGetStatus = (address: string) => {
-  const {data, error, isLoading} = useSWR(`${VITE_RELAYER_URL}/user/${address}/status`);
-  const isRegistered = data ? data?.status === 1 ? true : false : undefined; 
+  const { data, error, isLoading } = useSWR(
+    `${VITE_RELAYER_URL}/user/${address}/status`,
+  );
+  const isRegistered = data ? (data?.status === 1 ? true : false) : undefined;
 
-  return {data: isRegistered, error, isLoading};
+  return { data: isRegistered, error, isLoading };
 };

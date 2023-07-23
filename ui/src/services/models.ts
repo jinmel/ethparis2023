@@ -1,4 +1,4 @@
-export type AINft = {
+export type AIGeneratedChildren = {
   id?: string;
   imageURL: string;
   genome: Array<number>;

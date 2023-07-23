@@ -75,7 +75,7 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const router = createBrowserRouter([
   { path: "/", element: <Landing /> },
-  { path: "/collection", element: <Collection />, },
+  { path: "/collection", element: <Collection /> },
   {
     path: "/breed",
     element: <Breed />,

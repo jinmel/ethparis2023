@@ -3,65 +3,45 @@ import { Layout } from "../Layout";
 import { Button } from "../components/Button";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
 import { SelectedImageViewer } from "../components/SelectedImageViewer";
-import { ERC7007Info } from "../services/models";
-import { useLocation } from "react-router-dom";
+import { AIGeneratedChildren, ERC7007Info } from "../services/models";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useContractWrite } from "wagmi";
 import * as erc7007Abi from "../../abi/erc7007Abi.json";
 import { toast } from "react-toastify";
 
-const imgUrls = [
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-1.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image-2.jpg",
-  "https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg",
-];
 export const Mint = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const [tokenInfo, setTokenInfo] = useState<ERC7007Info>({
-    genome: "",
-    imgUrl: "",
-    name: "",
-  });
+
+  const { nfts: selectedChildren }: { nfts: AIGeneratedChildren[] } =
+    location.state;
+
+  useEffect(() => {
+    if (!selectedChildren || selectedChildren.length === 0) {
+      navigate("/breed");
+    }
+  }, [selectedChildren, navigate]);
+
+  const [currentSelected, setCurrentSelected] = useState<AIGeneratedChildren>();
 
   const [mintedToken, setMintedToken] = useState<
     ERC7007Info & { address: string; id: string }
   >();
-
-  const onImageSelected = (urls: string[]) => {
-    if (urls.length === 0) return;
-    setTokenInfo({
-      genome: "0x1234567890",
-      imgUrl: urls[0],
-      name: "Test",
-    });
-  };
 
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: `0x${import.meta.env.VITE_ERC7007_ADDR}`,
     abi: erc7007Abi,
     functionName: "mint",
   });
+
+  const onImageSelected = (urls: string[]) => {
+    if (urls.length === 0) return;
+    setCurrentSelected({
+      genome: [123],
+      imageURL: urls[0],
+      name: "Test",
+    });
+  };
 
   const mintToken = () => {
     if (write) {
@@ -96,8 +76,12 @@ export const Mint = () => {
 
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectedImageViewer
-            genome={tokenInfo.genome}
-            imgUrl={tokenInfo.imgUrl ? tokenInfo.imgUrl : "/400x300.svg"}
+            genome={currentSelected?.genome.toString() || ""}
+            imgUrl={
+              currentSelected?.imageURL
+                ? currentSelected.imageURL
+                : "/400x300.svg"
+            }
           />
         </section>
 
@@ -108,7 +92,7 @@ export const Mint = () => {
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectableImageGrid
             autoSelect={true}
-            imgUrls={imgUrls}
+            imgUrls={selectedChildren?.map((nft) => nft.imageURL) || []}
             onAllImageSelected={onImageSelected}
             maxSelectable={1}
           />
