@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Layout } from "../Layout";
 import { Button } from "../components/Button";
 import { SelectableImageGrid } from "../components/SelectableImageGrid";
@@ -14,24 +14,6 @@ import { AINft } from "../services/models";
 export const Mint = () => {
   const location = useLocation();
   const nfts = location.state?.nfts as AINft[];
-  const [tokenInfo, setTokenInfo] = useState<ERC7007Info>({
-    genome: "",
-    imgUrl: "",
-    name: "",
-  });
-
-  const [mintedToken, setMintedToken] = useState<
-    ERC7007Info & { address: string; id: string }
-  >();
-
-  const onImageSelected = (urls: string[]) => {
-    if (urls.length === 0) return;
-    setTokenInfo({
-      genome: "0x1234567890",
-      imgUrl: urls[0],
-      name: "Test",
-    });
-  };
 
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: `0x${import.meta.env.VITE_ERC7007_ADDR}`,
@@ -67,6 +49,19 @@ export const Mint = () => {
     setSelected([index]);
   }
 
+  const tokenInfo: ERC7007Info | undefined = useMemo(() => {
+    if (nfts.length > 0 && selected.length > 0) {
+      const nftInfo = nfts[selected[0]];
+      return {
+        genome: nftInfo.genome,
+        imgUrl: nftInfo.imageURL,
+        name: "Zenetik NFT",
+      }
+    } else {
+      return undefined;
+    }
+  }, [selected, nfts]);
+
   return (
     <Layout>
       <main className="flex flex-col w-full p-4 text-center">
@@ -77,8 +72,8 @@ export const Mint = () => {
 
         <section className="md:px-20 px-4 py-4 mx-auto">
           <SelectedImageViewer
-            genome={tokenInfo.genome}
-            imgUrl={tokenInfo.imgUrl ? tokenInfo.imgUrl : "/400x300.svg"}
+            genome={tokenInfo?.genome}
+            imgUrl={tokenInfo?.imgUrl ? tokenInfo.imgUrl : "/400x300.svg"}
           />
         </section>
 

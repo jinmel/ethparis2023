@@ -7,7 +7,7 @@ export type AIGeneratedChildren = {
 export type ERC7007Info = {
   name: string;
   imgUrl: string;
-  genome: string;
+  genome: number[];
 };
 
 export type OwnedAINFT = {

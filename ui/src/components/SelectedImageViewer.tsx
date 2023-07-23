@@ -1,10 +1,12 @@
+const IMAGE_BASE_URL = import.meta.env.VITE_ML_BACKEND_API_URL;
+
 export const SelectedImageViewer = ({
   imgUrl,
   genome,
   nftInfo,
 }: {
-  imgUrl: string;
-  genome: string;
+  imgUrl?: string;
+  genome?: number[];
   nftInfo?: {
     id: string;
     address: string;
@@ -15,7 +17,7 @@ export const SelectedImageViewer = ({
       <section className="flex rounded-lg outline outline-4 outline-pink-500 mr-5 md:max-w-[400px] content-center">
         <img
           className="h-auto max-w-full rounded-lg object-contain"
-          src={imgUrl}
+          src={`${IMAGE_BASE_URL}${imgUrl}`}
           alt="mintImage"
         />
       </section>
