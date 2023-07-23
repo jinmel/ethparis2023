@@ -76,7 +76,11 @@ app.post("/register", async (req: Request, res: Response) => {
     userAddr
   );
   if (isRegistered) {
-    res.sendStatus(404);
+    // res.sendStatus(404);
+    res.json({
+      status: 1,
+    });
+    return;
   }
 
   console.log(`isRegistered: ${isRegistered}`);
