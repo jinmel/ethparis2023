@@ -29,11 +29,7 @@ export class ApiClient {
     );
 
     const data: { image: string; genome: number[] }[] = await response.json();
-
-    return data.map((d) => {
-      d.image = `${this.baseUri}${d.image}`;
-      return d;
-    });
+    return data;
   }
 
   async generate(genomes: Array<Array<number>>): Promise<Array<ImageResponse>> {
